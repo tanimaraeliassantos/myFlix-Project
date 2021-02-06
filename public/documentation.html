@@ -16,6 +16,120 @@
 					favorite movies.
 				</p>
 			</div>
+			<table style="width:100%">
+				<tr>
+				  <th>Business Logic</th>
+				  <th>URL</th>
+				  <th>HTTP Method</th>
+				  <th>Request body data format</th>
+				  <th>Response body data format</th>
+				</tr>
+				<tr>
+				  <td>Get a list of all movies</td>
+				  <td>/movies</td>
+				  <td>GET</td>
+				  <td>NONE</td>
+				  <td>A JSON object holding data about all the movies</td>
+				</tr>
+				<tr>
+				  <td>Get the data about a single movie, by title</td>
+				  <td>/movies/[Title]</td>
+				  <td>GET</td>
+				  <td>None</td>
+				  <td>A JSON object holding data about a single movie, containing an ID, title, year, genre and directors. Example:
+					{
+						title: 'Black Panther',
+						year: '2018',
+						genre: [
+							{
+								slot: 1,
+								genre: 'fantasy',
+							},
+							{
+								slot: 2,
+								genre: 'action',
+							},
+							{
+								slot: 3,
+								genre: 'adventure',
+							},
+						],
+				
+						directors: 'Ryan Coogler',
+					}
+				  </td>
+				</tr>
+				<tr>
+					<td>Add a movie to list of movies</td>
+					<td>/movies</td>
+					<td>POST</td>
+					<td>A JSON object holding data about the movie to add, structured like:
+						{
+							title: 'The Dark Knight',
+							year: '2008',
+							genre: [
+								{
+									slot: 1,
+									genre: 'fantasy',
+								},
+								{
+									slot: 2,
+									genre: 'action',
+								},
+								{
+									slot: 3,
+									genre: 'adventure',
+								},
+							],
+					
+							directors: 'Cristopher Nolan',
+						},
+					</td>
+					<td>A JSON object holding data about the movie that was added, including and ID:
+						{
+							title: 'The Dark Knight',
+							year: '2008',
+							genre: [
+								{
+									slot: 1,
+									genre: 'fantasy',
+								},
+								{
+									slot: 2,
+									genre: 'action',
+								},
+								{
+									slot: 3,
+									genre: 'adventure',
+								},
+							],
+					
+							directors: 'Cristopher Nolan',
+						},
+					</td>
+				</tr>
+				<tr>
+					<td>Delete a movie by ID</td>
+					<td>/movies/[ID]</td>
+					<td>DELETE</td>
+					<td>None</td>
+					<td>A text message indicating whether the student was successfully removed</td>
+				</tr>
+				<tr>
+					<td>Update a movie title in a certain year</td>
+					<td>/movies/[Title]/[Year]</td>
+					<td>PUT</td>
+					<td>None</td>
+					<td>A text message indicating the movie, title and year that was updated</td>
+				</tr>
+				<tr>
+					<td>GET the directors of a movie</td>
+					<td>/movies/[Title]/[director]</td>
+					<td>GET</td>
+					<td>None</td>
+					<td>A text message indicating the director of the movie</td>
+				</tr>
+			  </table>
 			<script src="script.js"></script>
 		</body>
 	</html>
