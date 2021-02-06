@@ -416,11 +416,6 @@ app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-app.use((err, req, res, next) => {
-	console.error(err.stack);
-	res.status(500).send('Something broke!');
-});
-
 let topMovies = [
 	{
 		title: 'Black Panther',
@@ -691,6 +686,7 @@ app.get('/', (req, res) => {
 
 app.get('/movies', (req, res) => {
 	res.json(topMovies);
+	res.send('Succesful GET request returning data from all movies.');
 });
 
 //GET the data about a single movie, by title
@@ -698,9 +694,10 @@ app.get('/movies', (req, res) => {
 app.get('/movies/:title', (req, res) => {
 	res.json(
 		topMovies.find((movie) => {
-			return movie.title === req.params.name;
+			return movie.title === req.params.title;
 		})
 	);
+	res.send('Succesful GET request returning data from movie by title.');
 });
 
 //Add a movie to list of movies
@@ -741,7 +738,7 @@ app.put('/movies/:title/:year', (req, res) => {
 	});
 
 	if (movie) {
-		movie.titles[req.params.title] = parseInt(req.params.year);
+		movie.year[req.params.year] = parseInt(req.params.title);
 		res
 			.status(201)
 			.send(
@@ -765,18 +762,18 @@ app.get('movies/:title/directors', (req, res) => {
 	});
 
 	if (movie) {
-		let movieYear = topMovies.find((movie) => {
-			return movie.year === req.params.year;
-		});
+		let movieTitles = Object.values(movie.title);
+		let movieDirectors = movie.directors;
 
 		console.log(movie);
-		console.log(movie.year);
-		res.status(201).send('' + year);
+		console.log(movieTitles);
+		console.log(movieDirectors);
+		res.status(201).send('' + directors);
 		// res.status(201).send(year);
 	} else {
 		res
 			.status(404)
-			.send('Movie witht the title ' + req.params.title + ' was not found.');
+			.send('Movie with the title ' + req.params.title + ' was not found.');
 	}
 });
 
