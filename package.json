@@ -1,21 +1,30 @@
 {
-	"name": "my-first-package",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"body-parser": "^1.19.0",
-		"express": "^4.17.1",
-		"lodash": "^4.17.20",
-		"morgan": "^1.10.0"
-	},
-	"devDependencies": {
-		"eslint": "^7.19.0"
-	}
+  "name": "my-first-package",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "lodash": "^4.17.20",
+    "morgan": "^1.10.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.19.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anthropovixen/myFlix-Project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anthropovixen/myFlix-Project/issues"
+  },
+  "homepage": "https://github.com/anthropovixen/myFlix-Project#readme",
+  "description": ""
 }
