@@ -18,46 +18,86 @@
 			</div>
 			<table style="width:100%">
 				<tr>
-				  <th>Business Logic</th>
-				  <th>URL</th>
-				  <th>HTTP Method</th>
-				  <th>Request body data format</th>
-				  <th>Response body data format</th>
+					<th>Business Logic</th>
+					<th>URL</th>
+					<th>HTTP Method</th>
+					<th>Request body data format</th>
+					<th>Response body data format</th>
 				</tr>
 				<tr>
-				  <td>Get a list of all movies</td>
-				  <td>/movies</td>
-				  <td>GET</td>
-				  <td>NONE</td>
-				  <td>A JSON object holding data about all the movies</td>
+					<td>Get a list of all movies</td>
+					<td>/movies</td>
+					<td>GET</td>
+					<td>NONE</td>
+					<td>A JSON object holding data about all the movies</td>
 				</tr>
 				<tr>
-				  <td>Get the data about a single movie, by title</td>
-				  <td>/movies/[Title]</td>
-				  <td>GET</td>
-				  <td>None</td>
-				  <td>A JSON object holding data about a single movie, containing an ID, title, year, genre and directors. Example:
-					{
-						title: 'Black Panther',
-						year: '2018',
-						genre: [
-							{
-								slot: 1,
-								genre: 'fantasy',
+					<td>Get a list of all users</td>
+					<td>/users</td>
+					<td>GET</td>
+					<td>NONE</td>
+					<td>A JSON object holding data about all the movies</td>
+				</tr>
+				<tr>
+					<td>Get user by username</td>
+					<td>/users/[Username]</td>
+					<td>GET</td>
+					<td>NONE</td>
+					<td>A JSON object holding data about the user</td>
+				</tr>
+				<tr>
+					<td>Get the data about a single movie, by title</td>
+					<td>/movies/[Title]</td>
+					<td>GET</td>
+					<td>None</td>
+					<td>A JSON object holding data about a single movie, containing Genre, Director, Actors, ID, Title, Description, Image Path and Featured. Example:
+						{
+							"Genre": {
+								"Name": "Adventure",
+								"Description": "Adventure films are usually exciting stories, with new experiences or exotic locales, very similar to or often paired with the action film genre. They can include traditional swashbucklers or pirate films, serialized films, and historical spectacles, searches or expeditions for lost continents, jungle and desert epics, treasure hunts, disaster films, or searches for the unknown."
 							},
-							{
-								slot: 2,
-								genre: 'action',
+							"Director": {
+								"Name": "Richard Donner",
+								"Bio": "Richard Donner is a director and producer, known for Superman (1978), Ladyhawke (1985) and Lethal Weapon (1987).",
+								"Birth": "1930-04-24",
+								"Death": ""
 							},
-							{
-								slot: 3,
-								genre: 'adventure',
-							},
-						],
-				
-						directors: 'Ryan Coogler',
-					}
-				  </td>
+							"Actors": [],
+							"_id": "602eefb4a3bff60c06d80ec6",
+							"Title": "Superman",
+							"Description": "Just before the destruction of the planet Krypton, scientist Jor-El sends his infant son Kal-El on a spaceship to Earth. Raised by kindly farmers, young Clark discovers the source of his superhuman powers and moves to Metropolis to fight evil. As Superman, he battles the villainous Lex Luthor, while, as novice reporter, he attempts to woo co-worker Lois Lane.",
+							"ImagePath": "https://m.media-amazon.com/images/M/MV5BMzA0YWMwMTUtMTVhNC00NjRkLWE2ZTgtOWEzNjJhYzNiMTlkXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
+							"Featured": true
+						}
+					</td>
+				</tr>
+
+				<tr>
+					<td>Get data about genre</td>
+					<td>/movies/genres/[Name]</td>
+					<td>GET</td>
+					<td>None</td>
+					<td>A JSON object holding data about a single genre, containing its Description. Example:
+						{
+							"Genre": {
+								"Name": "Adventure",
+								"Description": "Adventure films are usually exciting stories, with new experiences or exotic locales, very similar to or often paired with the action film genre. They can include traditional swashbucklers or pirate films, serialized films, and historical spectacles, searches or expeditions for lost continents, jungle and desert epics, treasure hunts, disaster films, or searches for the unknown."
+						}
+					</td>
+				</tr>
+				<tr>
+					<td>Get data about a director by name</td>
+					<td>/movies/directors/[Name]</td>
+					<td>GET</td>
+					<td>None</td>
+					<td>A JSON object holding data about a single director, containing its Bio. Example:
+						{
+							"Director": {
+								"Name": "Richard Donner",
+								"Bio": "Richard Donner is a director and producer, known for Superman (1978), Ladyhawke (1985) and Lethal Weapon (1987)."
+							}
+						}
+					</td>
 				</tr>
 				<tr>
 					<td>Add a movie to list of movies</td>
@@ -65,69 +105,134 @@
 					<td>POST</td>
 					<td>A JSON object holding data about the movie to add, structured like:
 						{
-							title: 'The Dark Knight',
-							year: '2008',
-							genre: [
-								{
-									slot: 1,
-									genre: 'fantasy',
-								},
-								{
-									slot: 2,
-									genre: 'action',
-								},
-								{
-									slot: 3,
-									genre: 'adventure',
-								},
-							],
-					
-							directors: 'Cristopher Nolan',
-						},
+							"Genre": {
+								"Name": "Action",
+								"Description": "Action films usually include high energy, big-budget physical stunts and chases, possibly with rescues, battles, fights, escapes, destructive crises,, non-stop motion, spectacular rhythm and pacing, and adventurous, often two-dimensional 'good-guy' heroes or heroines battling 'bad guys' - all designed for pure audience escapism."
+							},
+							"Director": {
+								"Name": "James Mangold",
+								"Bio": "James Mangold is an American film and television director, screenwriter and producer. Films he has directed include Girl, Interrupted (1999), Walk the Line (2005), which he also co-wrote, the 2007 remake 3:10 to Yuma (2007), The Wolverine (2013), and Logan (2017).",
+								"Birth": "1963-12-16",
+								"Death": ""
+							},
+							"Actors": [],
+							"Title": "Logan",
+							"Description": "A weary Logan cares for an ailing Professor X at a remote outpost on the Mexican border. His plan to hide from the outside world gets upended when he meets a young mutant who is very much like him. Logan must now protect the girl and battle the dark forces that want to capture her.",
+							"ImagePath": "https://m.media-amazon.com/images/M/MV5BYzc5MTU4N2EtYTkyMi00NjdhLTg3NWEtMTY4OTEyMzJhZTAzXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
+							"Featured": true
+						}
 					</td>
-					<td>A JSON object holding data about the movie that was added, including and ID:
+					<td>A JSON object holding data about the movie that was added, including an ID:
 						{
-							title: 'The Dark Knight',
-							year: '2008',
-							genre: [
-								{
-									slot: 1,
-									genre: 'fantasy',
-								},
-								{
-									slot: 2,
-									genre: 'action',
-								},
-								{
-									slot: 3,
-									genre: 'adventure',
-								},
-							],
-					
-							directors: 'Cristopher Nolan',
-						},
+							"Genre": {
+								"Name": "Action",
+								"Description": "Action films usually include high energy, big-budget physical stunts and chases, possibly with rescues, battles, fights, escapes, destructive crises,, non-stop motion, spectacular rhythm and pacing, and adventurous, often two-dimensional 'good-guy' heroes or heroines battling 'bad guys' - all designed for pure audience escapism."
+							},
+							"Director": {
+								"Name": "James Mangold",
+								"Bio": "James Mangold is an American film and television director, screenwriter and producer. Films he has directed include Girl, Interrupted (1999), Walk the Line (2005), which he also co-wrote, the 2007 remake 3:10 to Yuma (2007), The Wolverine (2013), and Logan (2017).",
+								"Birth": "1963-12-16",
+								"Death": ""
+							},
+							"Actors": [],
+							"_id": "602eefdba3bff60c06d80ec9",
+							"Title": "Logan",
+							"Description": "A weary Logan cares for an ailing Professor X at a remote outpost on the Mexican border. His plan to hide from the outside world gets upended when he meets a young mutant who is very much like him. Logan must now protect the girl and battle the dark forces that want to capture her.",
+							"ImagePath": "https://m.media-amazon.com/images/M/MV5BYzc5MTU4N2EtYTkyMi00NjdhLTg3NWEtMTY4OTEyMzJhZTAzXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
+							"Featured": true
+						}
 					</td>
 				</tr>
 				<tr>
-					<td>Delete a movie by ID</td>
-					<td>/movies/[ID]</td>
+					<td>Add user to list of users</td>
+					<td>/users</td>
+					<td>POST</td>
+					<td>A JSON object holding data about the user to add, structured like:
+						{
+							"Username": "testUser123",
+							"Password": "testpassword456",
+							"Email": "testemail@gmail.com",
+							"Birthday": "10/10/81"
+						}
+					</td>
+					<td>A JSON object holding data about a single user, containing its Favorite Movies. ID, Username, Password, Email and Birthday. Example:
+						{
+							"FavoriteMovies": [],
+							"_id": "60338543d02e048cbfe098f8",
+							"Username": "testUser123",
+							"Password": "testpassword456",
+							"Email": "testemail@gmail.com",
+							"Birthday": "1981-10-09T14:00:00.000Z",
+							"__v": 0
+						}
+					</td>
+				</tr>
+				<tr>
+					<td>Update user's info, by username</td>
+					<td>/users/[Username]</td>
+					<td>PUT</td>
+					<td>A JSON object holding data about the user to update, structured like:
+						{
+							"Username": "testUser123",
+							"Password": "testpassword456",
+							"Email": "testemail@hotmail.com",
+							"Birthday": "10/10/81"
+						}
+					</td>
+					<td>A JSON object holding data about a single user, containing its Favorite Movies. ID, Username, Password, Email and Birthday. Example:
+						{
+							"FavoriteMovies": [],
+							"_id": "60338543d02e048cbfe098f8",
+							"Username": "testUser123",
+							"Password": "testpassword456",
+							"Email": "testemail@hotmail.com",
+							"Birthday": "1981-10-09T14:00:00.000Z",
+							"__v": 0
+						}
+					</td>
+				</tr>
+				<tr>
+					<td>Add movie to a user's list of favorites</td>
+					<td>/users/[Username]</td>
+					<td>POST</td>
+					<td>A JSON object holding data about the user to update, structured like:
+						{
+							"Favorite Movies": [
+								[
+									"602eef88a3bff60c06d80ec3",
+									"602eef93a3bff60c06d80ec4"
+								]
+							]
+					}
+					</td>
+					<td>A JSON object holding data about a single user, containing its Favorite Movies. ID, Username, Password, Email and Birthday. Example:
+						{
+							"FavoriteMovies": [
+							"602eef88a3bff60c06d80ec3",
+							"602eef93a3bff60c06d80ec4"
+						],
+							"_id": "60338543d02e048cbfe098f8",
+							"Username": "testUser123",
+							"Password": "testpassword456",
+							"Email": "testemail@hotmail.com",
+							"Birthday": "1981-10-09T14:00:00.000Z",
+							"__v": 0
+						}
+					</td>
+				</tr>
+				<tr>
+					<td>Delete a movie from user's favorites </td>
+					<td>/users/[Username]/Movies/[movieID]</td>
 					<td>DELETE</td>
 					<td>None</td>
-					<td>A text message indicating whether the student was successfully removed</td>
+					<td>A text message indicating whether the movie was successfully removed</td>
 				</tr>
 				<tr>
-					<td>Update a movie title in a certain year</td>
-					<td>/movies/[Title]/[Year]</td>
-					<td>PUT</td>
+					<td>Delete a user by username</td>
+					<td>/users/[Username]</td>
+					<td>DELETE</td>
 					<td>None</td>
-					<td>A text message indicating the movie, title and year that was updated</td>
-				</tr>
-				<tr>
-					<td>GET the directors of a movie</td>
-					<td>/movies/[Title]/[director]</td>
-					<td>GET</td>
-					<td>None</td>
-					<td>A text message indicating the director of the movie</td>
+					<td>A text message indicating the user was deleted.</td>
 				</tr>
 			  </table>
 			<script src="script.js"></script>
