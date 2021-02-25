@@ -296,7 +296,7 @@ let topMovies = [
 	},
 ];
 
-//Default text response when at/
+//Default text response when at home/
 
 app.get('/', (req, res) => {
 	res.send('Welcome to myFlix!');
@@ -316,6 +316,7 @@ app.get('/movies', (req, res) => {
 });
 
 // GET list of ALL users
+
 app.get('/users', (req, res) => {
 	Users.find()
 		.then((Users) => {
@@ -379,6 +380,8 @@ app.get('/movies/directors/:Name', (req, res) => {
 		});
 });
 
+// ADD movie to list of movies
+
 app.post('/movies', (req, res) => {
 	Movies.findOne({ Username: req.body.Title })
 		.then((Movies) => {
@@ -408,7 +411,6 @@ app.post('/movies', (req, res) => {
 
 //Allow new users to register
 
-//ADD user to list of users
 /* JSON will be expected in this format
 {
 	ID: Integer,
