@@ -25,6 +25,8 @@ app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('public'));
 
+let auth = erquire('./auth')(app);
+
 let topMovies = [
 	{
 		id: '1',
