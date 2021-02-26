@@ -25,278 +25,10 @@ app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('public'));
 
-let auth = erquire('./auth')(app);
+let auth = require('./auth')(app);
 
-let topMovies = [
-	{
-		id: '1',
-		title: 'Black Panther',
-		year: '2018',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'action',
-			},
-			{
-				slot: 3,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Ryan Coogler',
-	},
-	{
-		id: '2',
-		title: 'Spider-man: into the spider-verse',
-		year: '2018',
-		genre: [
-			{
-				slot: 1,
-				genre: 'animation',
-			},
-			{
-				slot: 2,
-				genre: 'fantasy',
-			},
-			{
-				slot: 3,
-				genre: 'comedy',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-			{
-				slot: 5,
-				genre: 'action',
-			},
-			{
-				slot: 6,
-				genre: 'kids and family',
-			},
-		],
-
-		directors: [
-			{
-				slot: 1,
-				director: 'Bob Persichetti',
-			},
-			{
-				slot: 2,
-				director: 'Peter Ramsey',
-			},
-			{
-				slot: 3,
-				director: 'Rodney Rothman',
-			},
-		],
-	},
-	{
-		id: '3',
-		title: 'The Incredibles',
-		year: '2004',
-		genre: [
-			{
-				slot: 1,
-				genre: 'animation',
-			},
-			{
-				slot: 2,
-				genre: 'comedy',
-			},
-			{
-				slot: 3,
-				genre: 'kids and family',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Brad Bird',
-	},
-	{
-		id: '4',
-		title: 'Avengers: Endgame',
-		year: '2019',
-		genre: [
-			{
-				slot: 1,
-				genre: 'sci fi',
-			},
-			{
-				slot: 2,
-				genre: 'fantasy',
-			},
-			{
-				slot: 3,
-				genre: 'action',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-		],
-
-		directors: [
-			{
-				slot: 1,
-				director: 'Anthony Russo',
-			},
-			{
-				slot: 2,
-				director: 'Joe Russo',
-			},
-		],
-	},
-	{
-		id: '5',
-		title: 'The Dark Knight',
-		year: '2008',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'action',
-			},
-			{
-				slot: 3,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Cristopher Nolan',
-	},
-	{
-		id: '6',
-		title: 'Iron Man',
-		year: '2008',
-		genre: [
-			{
-				slot: 1,
-				genre: 'sci fi',
-			},
-			{
-				slot: 2,
-				genre: 'fantasy',
-			},
-			{
-				slot: 3,
-				genre: 'action',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Jon Favreau',
-	},
-	{
-		id: '7',
-		title: 'Superman: The Movie',
-		year: '1978',
-		genre: [
-			{
-				slot: 1,
-				genre: 'sci fi',
-			},
-			{
-				slot: 2,
-				genre: 'fantasy',
-			},
-			{
-				slot: 3,
-				genre: 'action',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Richard Donner',
-	},
-	{
-		id: '8',
-		title: 'Wonder Woman',
-		year: '2017',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'action',
-			},
-			{
-				slot: 3,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Patty Jenkins',
-	},
-	{
-		id: '9',
-		title: 'Thor: Ragnarok',
-		year: '2017',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'sci fi',
-			},
-			{
-				slot: 3,
-				genre: 'comedy',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-			{
-				slot: 5,
-				genre: 'action',
-			},
-		],
-
-		directors: 'Taika Waititi',
-	},
-	{
-		id: '10',
-		title: 'Logan',
-		year: '2017',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'action',
-			},
-			{
-				slot: 3,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'James Mangold',
-	},
-];
+const passport = require('passport');
+require('./passport');
 
 //Default text response when at home/
 
@@ -306,110 +38,138 @@ app.get('/', (req, res) => {
 
 //GET list of ALL movies
 
-app.get('/movies', (req, res) => {
-	Movies.find()
-		.then((Movies) => {
-			res.status(201).json(Movies);
-		})
-		.catch((err) => {
-			console.error(err);
-			res.status(500).send('Error: ' + err);
-		});
-});
+app.get(
+	'/movies',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Movies.find()
+			.then((Movies) => {
+				res.status(201).json(Movies);
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500).send('Error: ' + err);
+			});
+	}
+);
 
 // GET list of ALL users
 
-app.get('/users', (req, res) => {
-	Users.find()
-		.then((Users) => {
-			res.status(201).json(Users);
-		})
-		.catch((err) => {
-			console.error(err);
-			res.status(500).send('Error: ' + err);
-		});
-});
+app.get(
+	'/users',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Users.find()
+			.then((Users) => {
+				res.status(201).json(Users);
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500).send('Error: ' + err);
+			});
+	}
+);
 
 //GET a user by username
 
-app.get('/users/:Username', (req, res) => {
-	Users.findOne({ Username: req.params.Username })
-		.then((Users) => {
-			res.json(Users);
-		})
-		.catch((err) => {
-			console.error(err);
-			res.status(500).send('Error: ' + err);
-		});
-});
+app.get(
+	'/users/:Username',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Users.findOne({ Username: req.params.Username })
+			.then((Users) => {
+				res.json(Users);
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500).send('Error: ' + err);
+			});
+	}
+);
 
 //GET data about a single movie, by title
 
-app.get('/movies/:Title', (req, res) => {
-	Movies.findOne({ Title: req.params.Title })
-		.then((Movies) => {
-			res.json(Movies);
-		})
-		.catch((err) => {
-			console.error(err);
-			res.status(500).send('Error: ' + err);
-		});
-});
+app.get(
+	'/movies/:Title',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Movies.findOne({ Title: req.params.Title })
+			.then((Movies) => {
+				res.json(Movies);
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500).send('Error: ' + err);
+			});
+	}
+);
 
 //GET data about movies by genre
 
-app.get('/movies/genres/:Name', (req, res) => {
-	Movies.find({ 'Genre.Name': req.params.Name })
-		.then((Genres) => {
-			res.json(Genres);
-		})
-		.catch((err) => {
-			console.error(err);
-			res.status(500).send('Error: ' + err);
-		});
-});
+app.get(
+	'/movies/genres/:Name',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Movies.find({ 'Genre.Name': req.params.Name })
+			.then((Genres) => {
+				res.json(Genres);
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500).send('Error: ' + err);
+			});
+	}
+);
 
 //GET data about a director by name
 
-app.get('/movies/directors/:Name', (req, res) => {
-	Movies.find({ 'Director.Name': req.params.Name })
-		.then((Directors) => {
-			res.json(Directors);
-		})
-		.catch((err) => {
-			console.error(err);
-			res.status(500).send('Error: ' + err);
-		});
-});
+app.get(
+	'/movies/directors/:Name',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Movies.find({ 'Director.Name': req.params.Name })
+			.then((Directors) => {
+				res.json(Directors);
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500).send('Error: ' + err);
+			});
+	}
+);
 
 // ADD movie to list of movies
 
-app.post('/movies', (req, res) => {
-	Movies.findOne({ Username: req.body.Title })
-		.then((Movies) => {
-			if (Movies) {
-				return res.status(400).send(req.body.Title + ' already exists');
-			} else {
-				Movies.create({
-					Title: req.body.Title,
-					Description: req.body.Description,
-					ImagePath: req.body.ImagePath,
-					Featured: req.body.Featured,
-				})
-					.then((Movies) => {
-						res.status(201).json(Movies);
+app.post(
+	'/movies',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Movies.findOne({ Username: req.body.Title })
+			.then((Movies) => {
+				if (Movies) {
+					return res.status(400).send(req.body.Title + ' already exists');
+				} else {
+					Movies.create({
+						Title: req.body.Title,
+						Description: req.body.Description,
+						ImagePath: req.body.ImagePath,
+						Featured: req.body.Featured,
 					})
-					.catch((error) => {
-						console.error(error);
-						res.status(500).send('Error: ' + error);
-					});
-			}
-		})
-		.catch((error) => {
-			console.error(error);
-			res.status(500).send('Error: ' + error);
-		});
-});
+						.then((Movies) => {
+							res.status(201).json(Movies);
+						})
+						.catch((error) => {
+							console.error(error);
+							res.status(500).send('Error: ' + error);
+						});
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+				res.status(500).send('Error: ' + error);
+			});
+	}
+);
 
 //Allow new users to register
 
@@ -462,66 +222,78 @@ app.post('/users', (req, res) => {
 	Birthday: Date
 } */
 
-app.put('/users/:Username', (req, res) => {
-	Users.findOneAndUpdate(
-		{ Username: req.params.Username },
-		{
-			$set: {
-				Username: req.body.Username,
-				Password: req.body.Password,
-				Email: req.body.Email,
-				Birthday: req.body.Birthday,
+app.put(
+	'/users/:Username',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Users.findOneAndUpdate(
+			{ Username: req.params.Username },
+			{
+				$set: {
+					Username: req.body.Username,
+					Password: req.body.Password,
+					Email: req.body.Email,
+					Birthday: req.body.Birthday,
+				},
 			},
-		},
-		{ new: true },
-		(err, updatedUser) => {
-			if (err) {
-				console.error(err);
-				res.status(500).send('Error: ' + err);
-			} else {
-				res.json(updatedUser);
+			{ new: true },
+			(err, updatedUser) => {
+				if (err) {
+					console.error(err);
+					res.status(500).send('Error: ' + err);
+				} else {
+					res.json(updatedUser);
+				}
 			}
-		}
-	);
-});
+		);
+	}
+);
 
 //ADD a movie to a user's list of favorites
 
-app.post('/users/:username/movies/:MovieID', (req, res) => {
-	Users.findOneAndUpdate(
-		{ Username: req.params.Username },
-		{
-			$push: { FavoriteMovies: req.params.MovieID },
-		},
-		{ new: true },
-		(err, updatedUser) => {
-			if (err) {
-				console.error(err);
-				res.status(500).send('Error: ' + err);
-			} else {
-				res.json(updatedUser);
+app.post(
+	'/users/:username/movies/:MovieID',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Users.findOneAndUpdate(
+			{ Username: req.params.Username },
+			{
+				$push: { FavoriteMovies: req.params.MovieID },
+			},
+			{ new: true },
+			(err, updatedUser) => {
+				if (err) {
+					console.error(err);
+					res.status(500).send('Error: ' + err);
+				} else {
+					res.json(updatedUser);
+				}
 			}
-		}
-	);
-});
+		);
+	}
+);
 
 // DELETE a movie from favorites
 
-app.delete('/users/:Username/movies/:MovieID', (req, res) => {
-	Users.findOneAndUpdate(
-		{ Username: req.params.Username },
-		{ $pull: { FavoriteMovies: req.params.MovieID } },
-		{ new: true },
-		(err, updatedUser) => {
-			if (err) {
-				console.error(err);
-				res.status(500).send('Error: ' + err);
-			} else {
-				res.json(updatedUser);
+app.delete(
+	'/users/:Username/movies/:MovieID',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Users.findOneAndUpdate(
+			{ Username: req.params.Username },
+			{ $pull: { FavoriteMovies: req.params.MovieID } },
+			{ new: true },
+			(err, updatedUser) => {
+				if (err) {
+					console.error(err);
+					res.status(500).send('Error: ' + err);
+				} else {
+					res.json(updatedUser);
+				}
 			}
-		}
-	);
-});
+		);
+	}
+);
 
 // // DELETE Favoritemovies key (NOT WORKING, it deletes a whole user instead)
 
@@ -535,20 +307,24 @@ app.delete('/users/:Username/movies/:MovieID', (req, res) => {
 //Allow existing user to deregister
 //DELETE a user by username
 
-app.delete('/users/:Username', (req, res) => {
-	Users.findOneAndRemove({ Username: req.params.Username })
-		.then((user) => {
-			if (!user) {
-				res.status(400).send(req.params.Username + ' was not found');
-			} else {
-				res.status(200).send(req.params.Username + ' was deleted.');
-			}
-		})
-		.catch((err) => {
-			console.error(err);
-			res.status(500).send('Error: ' + err);
-		});
-});
+app.delete(
+	'/users/:Username',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Users.findOneAndRemove({ Username: req.params.Username })
+			.then((user) => {
+				if (!user) {
+					res.status(400).send(req.params.Username + ' was not found');
+				} else {
+					res.status(200).send(req.params.Username + ' was deleted.');
+				}
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500).send('Error: ' + err);
+			});
+	}
+);
 
 app.listen(8080, () => {
 	console.log('Your app is listening on port 8080.');
