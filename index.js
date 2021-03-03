@@ -12,6 +12,8 @@ const Models = require('./models.js');
 const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
+const { check, validationResult } = require('express-validator');
+
 app.use(
 	cors({
 		origin: (origin, callback) => {
@@ -189,33 +191,51 @@ app.post(
 
 //Allow new users to register
 
-app.post('/users', (req, res) => {
-	let hashedPassword = Users.hashPassword(req.body.Password);
-	Users.findOne({ Username: req.body.Username })
-		.then((User) => {
-			if (User) {
-				return res.status(400).send(req.body.Username + ' already exists');
-			} else {
-				Users.create({
-					Username: req.body.Username,
-					Password: hashedPassword,
-					Email: req.body.Email,
-					Birthday: req.body.Birthday,
-				})
-					.then((User) => {
-						res.status(201).json(Users);
+app.post(
+	'/users',
+	[
+		check('Username', 'Username is required').isLength({ min: 5 }),
+		check(
+			'Username',
+			'Username contains non alphanumeric characters - not allowed.'
+		).isAlphanumeric(),
+		check('Password', 'Password is required').not().isEmpty(),
+		check('Email', 'Email does not appear to be valid.').isEmail(),
+	],
+	(req, res) => {
+		let errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			return res.status(422).json({ errors: errors.array() });
+		}
+
+		let hashedPassword = Users.hashPassword(req.body.Password);
+		Users.findOne({ Username: req.body.Username })
+			.then((User) => {
+				if (User) {
+					return res.status(400).send(req.body.Username + ' already exists');
+				} else {
+					Users.create({
+						Username: req.body.Username,
+						Password: hashedPassword,
+						Email: req.body.Email,
+						Birthday: req.body.Birthday,
 					})
-					.catch((error) => {
-						console.error(error);
-						res.status(500).send('Error: ' + error);
-					});
-			}
-		})
-		.catch((error) => {
-			console.error(error);
-			res.status(500).send('Error: ' + error);
-		});
-});
+						.then((User) => {
+							res.status(201).json(Users);
+						})
+						.catch((error) => {
+							console.error(error);
+							res.status(500).send('Error: ' + error);
+						});
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+				res.status(500).send('Error: ' + error);
+			});
+	}
+);
 
 // Update a user's info, by username
 
