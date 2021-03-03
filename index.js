@@ -1,5 +1,3 @@
-// EXERCISE 2.8
-
 const express = require('express'),
 	bodyParser = require('body-parser'),
 	uuid = require('uuid'),
@@ -145,8 +143,8 @@ app.post(
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Movies.findOne({ Username: req.body.Title })
-			.then((Movies) => {
-				if (Movies) {
+			.then((movie) => {
+				if (movie) {
 					return res.status(400).send(req.body.Title + ' already exists');
 				} else {
 					Movies.create({
@@ -155,8 +153,8 @@ app.post(
 						ImagePath: req.body.ImagePath,
 						Featured: req.body.Featured,
 					})
-						.then((Movies) => {
-							res.status(201).json(Movies);
+						.then((movie) => {
+							res.status(201).json(movie);
 						})
 						.catch((error) => {
 							console.error(error);
@@ -172,15 +170,6 @@ app.post(
 );
 
 //Allow new users to register
-
-/* JSON will be expected in this format
-{
-	ID: Integer,
-	Username: String,
-	Password: String,
-	Email: String,
-	Birthday: Date
-}*/
 
 app.post('/users', (req, res) => {
 	Users.findOne({ Username: req.body.Username })
@@ -211,17 +200,6 @@ app.post('/users', (req, res) => {
 
 // Update a user's info, by username
 
-/* JSON is expected in this format
-{
-	Username: String,
-	(required)
-	Password: String,
-	(required)
-	Email: String,
-	(required)
-	Birthday: Date
-} */
-
 app.put(
 	'/users/:Username',
 	passport.authenticate('jwt', { session: false }),
@@ -251,8 +229,8 @@ app.put(
 
 //ADD a movie to a user's list of favorites
 
-app.post(
-	'/users/:username/movies/:MovieID',
+app.get(
+	'/users/:Username/movies/:MovieID',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Users.findOneAndUpdate(
@@ -295,17 +273,7 @@ app.delete(
 	}
 );
 
-// // DELETE Favoritemovies key (NOT WORKING, it deletes a whole user instead)
-
-// app.delete('/users/:Username', (req, res) => {
-// 	Users.findOneAndRemove(req.params.FavoriteMovies, function (err) {
-// 		if (err) res.send(err);
-// 		else res.json({ message: 'Favorite Movies deleted' });
-// 	});
-// });
-
 //Allow existing user to deregister
-//DELETE a user by username
 
 app.delete(
 	'/users/:Username',
@@ -329,51 +297,3 @@ app.delete(
 app.listen(8080, () => {
 	console.log('Your app is listening on port 8080.');
 });
-
-// [
-//     {
-//         "FavoriteMovies": [],
-//         "_id": "6035c387245c850d46cfa47d",
-//         "Username": "GiaMia",
-//         "Password": "Password123",
-//         "Email": "giamatthews@gmail.com",
-//         "Birthday": "1980-09-30T14:00:00.000Z",
-//         "__v": 0
-//     },
-//     {
-//         "FavoriteMovies": [],
-//         "_id": "6035c412245c850d46cfa47f",
-//         "Username": "MonAmi",
-//         "Password": "Password456",
-//         "Email": "tierneybarr@gmail.com",
-//         "Birthday": "1988-05-23T00:00:00.000Z",
-//         "__v": 0
-//     },
-//     {
-//         "FavoriteMovies": [],
-//         "_id": "6035c44c245c850d46cfa480",
-//         "Username": "Nofun",
-//         "Password": "Password789",
-//         "Email": "emersonpruitt@gmail.com",
-//         "Birthday": "1998-08-08T00:00:00.000Z",
-//         "__v": 0
-//     },
-//     {
-//         "FavoriteMovies": [],
-//         "_id": "6035c478245c850d46cfa481",
-//         "Username": "OBG",
-//         "Password": "Password147",
-//         "Email": "marliealexander@gmail.com",
-//         "Birthday": "1964-12-03T00:00:00.000Z",
-//         "__v": 0
-//     },
-//     {
-//         "FavoriteMovies": [],
-//         "_id": "6035c493245c850d46cfa482",
-//         "Username": "testUser123",
-//         "Password": "testpassword456",
-//         "Email": "testemail@gmail.com",
-//         "Birthday": "1981-10-09T14:00:00.000Z",
-//         "__v": 0
-//     }
-// ]
