@@ -25,277 +25,6 @@ app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('public'));
 
-let topMovies = [
-	{
-		id: '1',
-		title: 'Black Panther',
-		year: '2018',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'action',
-			},
-			{
-				slot: 3,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Ryan Coogler',
-	},
-	{
-		id: '2',
-		title: 'Spider-man: into the spider-verse',
-		year: '2018',
-		genre: [
-			{
-				slot: 1,
-				genre: 'animation',
-			},
-			{
-				slot: 2,
-				genre: 'fantasy',
-			},
-			{
-				slot: 3,
-				genre: 'comedy',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-			{
-				slot: 5,
-				genre: 'action',
-			},
-			{
-				slot: 6,
-				genre: 'kids and family',
-			},
-		],
-
-		directors: [
-			{
-				slot: 1,
-				director: 'Bob Persichetti',
-			},
-			{
-				slot: 2,
-				director: 'Peter Ramsey',
-			},
-			{
-				slot: 3,
-				director: 'Rodney Rothman',
-			},
-		],
-	},
-	{
-		id: '3',
-		title: 'The Incredibles',
-		year: '2004',
-		genre: [
-			{
-				slot: 1,
-				genre: 'animation',
-			},
-			{
-				slot: 2,
-				genre: 'comedy',
-			},
-			{
-				slot: 3,
-				genre: 'kids and family',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Brad Bird',
-	},
-	{
-		id: '4',
-		title: 'Avengers: Endgame',
-		year: '2019',
-		genre: [
-			{
-				slot: 1,
-				genre: 'sci fi',
-			},
-			{
-				slot: 2,
-				genre: 'fantasy',
-			},
-			{
-				slot: 3,
-				genre: 'action',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-		],
-
-		directors: [
-			{
-				slot: 1,
-				director: 'Anthony Russo',
-			},
-			{
-				slot: 2,
-				director: 'Joe Russo',
-			},
-		],
-	},
-	{
-		id: '5',
-		title: 'The Dark Knight',
-		year: '2008',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'action',
-			},
-			{
-				slot: 3,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Cristopher Nolan',
-	},
-	{
-		id: '6',
-		title: 'Iron Man',
-		year: '2008',
-		genre: [
-			{
-				slot: 1,
-				genre: 'sci fi',
-			},
-			{
-				slot: 2,
-				genre: 'fantasy',
-			},
-			{
-				slot: 3,
-				genre: 'action',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Jon Favreau',
-	},
-	{
-		id: '7',
-		title: 'Superman: The Movie',
-		year: '1978',
-		genre: [
-			{
-				slot: 1,
-				genre: 'sci fi',
-			},
-			{
-				slot: 2,
-				genre: 'fantasy',
-			},
-			{
-				slot: 3,
-				genre: 'action',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Richard Donner',
-	},
-	{
-		id: '8',
-		title: 'Wonder Woman',
-		year: '2017',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'action',
-			},
-			{
-				slot: 3,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'Patty Jenkins',
-	},
-	{
-		id: '9',
-		title: 'Thor: Ragnarok',
-		year: '2017',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'sci fi',
-			},
-			{
-				slot: 3,
-				genre: 'comedy',
-			},
-			{
-				slot: 4,
-				genre: 'adventure',
-			},
-			{
-				slot: 5,
-				genre: 'action',
-			},
-		],
-
-		directors: 'Taika Waititi',
-	},
-	{
-		id: '10',
-		title: 'Logan',
-		year: '2017',
-		genre: [
-			{
-				slot: 1,
-				genre: 'fantasy',
-			},
-			{
-				slot: 2,
-				genre: 'action',
-			},
-			{
-				slot: 3,
-				genre: 'adventure',
-			},
-		],
-
-		directors: 'James Mangold',
-	},
-];
-
 //Default text response when at home/
 
 app.get('/', (req, res) => {
@@ -483,9 +212,9 @@ app.put('/users/:Username', (req, res) => {
 	);
 });
 
-//ADD a movie to a user's list of favorites
+//ADD a movie to list of favorites
 
-app.post('/users/:username/movies/:MovieID', (req, res) => {
+app.get('/users/:Username/movies/:MovieID', (req, res) => {
 	Users.findOneAndUpdate(
 		{ Username: req.params.Username },
 		{
@@ -503,7 +232,7 @@ app.post('/users/:username/movies/:MovieID', (req, res) => {
 	);
 });
 
-// DELETE a movie from favorites
+// REMOVE a movie from favorites
 
 app.delete('/users/:Username/movies/:MovieID', (req, res) => {
 	Users.findOneAndUpdate(
@@ -520,15 +249,6 @@ app.delete('/users/:Username/movies/:MovieID', (req, res) => {
 		}
 	);
 });
-
-// // DELETE Favoritemovies key (NOT WORKING, it deletes a whole user instead)
-
-// app.delete('/users/:Username', (req, res) => {
-// 	Users.findOneAndRemove(req.params.FavoriteMovies, function (err) {
-// 		if (err) res.send(err);
-// 		else res.json({ message: 'Favorite Movies deleted' });
-// 	});
-// });
 
 //Allow existing user to deregister
 //DELETE a user by username
