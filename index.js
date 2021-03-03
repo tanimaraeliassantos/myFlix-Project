@@ -9,6 +9,9 @@ const app = express();
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
+const cors = require('cors');
+app.use(cors());
+
 const Movies = Models.Movies;
 const Users = Models.Users;
 const Genres = Models.Genres;
