@@ -29,8 +29,8 @@ app.use(
 
 const Movies = Models.Movies;
 const Users = Models.Users;
-const Genres = Models.Genres;
-const Directors = Models.Directors;
+// const Genres = Models.Genres;
+// const Directors = Models.Directors;
 
 mongoose.connect('mongodb://localhost:27017/myFlixDB', {
 	useNewUrlParser: true,
@@ -190,6 +190,7 @@ app.post(
 //Allow new users to register
 
 app.post('/users', (req, res) => {
+	let hashedPassword = Users.hashPassword(req.body.Password);
 	Users.findOne({ Username: req.body.Username })
 		.then((User) => {
 			if (User) {
@@ -197,7 +198,7 @@ app.post('/users', (req, res) => {
 			} else {
 				Users.create({
 					Username: req.body.Username,
-					Password: req.body.Password,
+					Password: hashedPassword,
 					Email: req.body.Email,
 					Birthday: req.body.Birthday,
 				})
