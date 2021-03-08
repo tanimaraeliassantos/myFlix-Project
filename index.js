@@ -1,19 +1,32 @@
 const express = require('express'),
 	bodyParser = require('body-parser'),
-	uuid = require('uuid'),
 	morgan = require('morgan');
-const { isInteger } = require('lodash');
-
-const app = express();
-
-const mongoose = require('mongoose');
-const Models = require('./models.js');
-
-const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+mongoose = require('mongoose');
+passport = require('passport');
+cors = require('cors');
 
 const { check, validationResult } = require('express-validator');
+const { isInteger } = require('lodash');
+require('./passport');
 
+const app = express();
+const Models = require('./models.js');
+const Movies = Models.Movies;
+const Users = Models.Users;
+
+app.use(bodyParser.json());
+app.use(morgan('common'));
+app.use(express.static('public'));
+
+// mongoose.connect('mongodb://localhost:27017/myFlixDB'
+mongoose.connect(process.env.CONNECTION_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+});
+
+let auth = require('./auth')(app);
+
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 app.use(
 	cors({
 		origin: (origin, callback) => {
@@ -29,30 +42,16 @@ app.use(
 	})
 );
 
-const Movies = Models.Movies;
-const Users = Models.Users;
-// const Genres = Models.Genres;
-// const Directors = Models.Directors;
-
-// mongoose.connect('mongodb://localhost:27017/myFlixDB'
-mongoose.connect('process.env.CONNECTION_URI', {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
-
-app.use(bodyParser.json());
-app.use(morgan('common'));
-app.use(express.static('public'));
-
-let auth = require('./auth')(app);
-
-const passport = require('passport');
-require('./passport');
-
-//Default text response when at home/
+//Default text response when at home
 
 app.get('/', (req, res) => {
 	res.send('Welcome to myFlix!');
+});
+
+//GET documentation
+
+app.get('/documentation', (req, res) => {
+	res.sendFile('public/documentation.html', { root: __dirname });
 });
 
 //GET list of ALL movies
