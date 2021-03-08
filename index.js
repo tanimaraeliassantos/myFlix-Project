@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('public'));
 
-// mongoose.connect('mongodb://localhost:27017/myFlixDB'
 mongoose.connect(process.env.CONNECTION_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -209,7 +208,7 @@ app.post(
 			return res.status(422).json({ errors: errors.array() });
 		}
 
-		let hashedPassword = Users.hashPassword(req.body.Password);
+		const hashedPassword = Users.hashPassword(req.body.Password);
 		Users.findOne({ Username: req.body.Username })
 			.then((User) => {
 				if (User) {
@@ -222,7 +221,7 @@ app.post(
 						Birthday: req.body.Birthday,
 					})
 						.then((User) => {
-							res.status(201).json(Users);
+							res.status(201).json(User);
 						})
 						.catch((error) => {
 							console.error(error);
