@@ -1,12 +1,14 @@
 const express = require('express'),
-const bodyParser = require('body-parser'),
-const morgan = require('morgan');
-const mongoose = require('mongoose');
-
-const { check, validationResult } = require('express-validator');
+	bodyParser = require('body-parser'),
+	uuid = require('uuid'),
+	morgan = require('morgan');
 const { isInteger } = require('lodash');
 
 const app = express();
+
+const mongoose = require('mongoose');
+
+const { check, validationResult } = require('express-validator');
 const Models = require('./models.js');
 const Movies = Models.Movies;
 const user = Models.user;
@@ -78,7 +80,8 @@ app.get(
 	'/users',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
-		user.find()
+		user
+			.find()
 			.then((user) => {
 				res.status(201).json(user);
 			})
@@ -95,7 +98,8 @@ app.get(
 	'/users/:username',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
-		user.findOne({ username: req.params.username })
+		user
+			.findOne({ username: req.params.username })
 			.then((user) => {
 				res.json(user);
 			})
@@ -211,17 +215,19 @@ app.post(
 		}
 
 		const hashedPassword = user.hashPassword(req.body.Password);
-		user.findOne({ username: req.body.username })
+		user
+			.findOne({ username: req.body.username })
 			.then((user) => {
 				if (user) {
 					return res.status(400).send(req.body.username + ' already exists');
 				} else {
-					user.create({
-						username: req.body.username,
-						Password: hashedPassword,
-						Email: req.body.Email,
-						Birthday: req.body.Birthday,
-					})
+					user
+						.create({
+							username: req.body.username,
+							Password: hashedPassword,
+							Email: req.body.Email,
+							Birthday: req.body.Birthday,
+						})
 						.then((user) => {
 							res.status(201).json(user);
 						})
@@ -333,7 +339,8 @@ app.delete(
 	'/users/:username',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
-		user.findOneAndRemove({ username: req.params.username })
+		user
+			.findOneAndRemove({ username: req.params.username })
 			.then((user) => {
 				if (!user) {
 					res.status(400).send(req.params.username + ' was not found');
