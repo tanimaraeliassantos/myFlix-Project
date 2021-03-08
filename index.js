@@ -1,34 +1,33 @@
 const express = require('express'),
-	bodyParser = require('body-parser'),
-	uuid = require('uuid'),
-	morgan = require('morgan');
-const { isInteger } = require('lodash');
+	morgan = require('morgan'),
+	mongoose = require('mongoose'),
+	Models = require('./models.js'),
+	bodyParser = require('body-parser');
 
-const app = express();
-
-const mongoose = require('mongoose');
-
-const { check, validationResult } = require('express-validator');
-const Models = require('./models.js');
 const Movies = Models.Movies;
 const user = Models.user;
-
-app.use(bodyParser.json());
-app.use(morgan('common'));
-app.use(express.static('public'));
-
-const auth = require('./auth.js')(app);
-
-const passport = require('passport');
-require('./passport');
 
 mongoose.connect(process.env.CONNECTION_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
 
+const app = express();
+
+app.use(morgan('common'));
+
+app.use(express.static('public'));
+
+app.use(bodyParser.json());
+
+const passport = require('passport');
+require('./passport.js');
+
 const cors = require('cors');
+
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+const { check, validationResult } = require('express-validator');
 
 app.use(
 	cors({
@@ -44,6 +43,8 @@ app.use(
 		},
 	})
 );
+
+let auth = require('./auth.js')(app);
 
 //Default text response when at home
 
@@ -74,7 +75,7 @@ app.get(
 	}
 );
 
-// GET list of ALL user
+// GET list of ALL users
 
 app.get(
 	'/users',
@@ -202,22 +203,25 @@ app.post(
 		check('username', 'username is required').isLength({ min: 5 }),
 		check(
 			'username',
-			'username contains non alphanumeric characters - not allowed.'
+			'username contains non-alphanumeric characters — not allowed.'
 		).isAlphanumeric(),
 		check('Password', 'Password is required').not().isEmpty(),
 		check('Email', 'Email does not appear to be valid.').isEmail(),
 	],
 	(req, res) => {
+		// Checks validation object for errors
 		let errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
 			return res.status(422).json({ errors: errors.array() });
 		}
 
-		const hashedPassword = user.hashPassword(req.body.Password);
+		let hashedPassword = user.hashPassword(req.body.Password);
+		// Checks if requested username already exists
 		user
 			.findOne({ username: req.body.username })
 			.then((user) => {
+				// If the username already exists, send a response saying so
 				if (user) {
 					return res.status(400).send(req.body.username + ' already exists');
 				} else {
@@ -243,6 +247,54 @@ app.post(
 			});
 	}
 );
+
+// app.post(
+// 	'/users',
+// 	[
+// 		check('username', 'username is required').isLength({ min: 5 }),
+// 		check(
+// 			'username',
+// 			'username contains non alphanumeric characters - not allowed.'
+// 		).isAlphanumeric(),
+// 		check('Password', 'Password is required').not().isEmpty(),
+// 		check('Email', 'Email does not appear to be valid.').isEmail(),
+// 	],
+// 	(req, res) => {
+// 		let errors = validationResult(req);
+
+// 		if (!errors.isEmpty()) {
+// 			return res.status(422).json({ errors: errors.array() });
+// 		}
+
+// 		const hashedPassword = user.hashPassword(req.body.Password);
+// 		user
+// 			.findOne({ username: req.body.username })
+// 			.then((user) => {
+// 				if (user) {
+// 					return res.status(400).send(req.body.username + ' already exists');
+// 				} else {
+// 					user
+// 						.create({
+// 							username: req.body.username,
+// 							Password: hashedPassword,
+// 							Email: req.body.Email,
+// 							Birthday: req.body.Birthday,
+// 						})
+// 						.then((user) => {
+// 							res.status(201).json(user);
+// 						})
+// 						.catch((error) => {
+// 							console.error(error);
+// 							res.status(500).send('Error: ' + error);
+// 						});
+// 				}
+// 			})
+// 			.catch((error) => {
+// 				console.error(error);
+// 				res.status(500).send('Error: ' + error);
+// 			});
+// 	}
+// );
 
 // Update a user's info, by username
 
