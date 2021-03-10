@@ -47,10 +47,16 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
-//Default text response when at home/
+//Default text response when at home
 
 app.get('/', (req, res) => {
 	res.send('Welcome to myFlix!');
+});
+
+// GET documentation
+
+app.get('/documentation', (req, res) => {
+	res.sendFile('public/public/documentation.html', { root: __dirname });
 });
 
 //GET list of ALL movies
@@ -95,7 +101,7 @@ app.get(
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		user
-			.findOne({ username: req.params.username })
+			.findOne({ Username: req.params.Username })
 			.then((user) => {
 				res.json(user);
 			})
@@ -195,37 +201,35 @@ app.post(
 app.post(
 	'/users',
 	[
-		check('username', 'username is required').isLength({ min: 5 }),
+		check('Username', 'Username is required').isLength({ min: 5 }),
 		check(
-			'username',
-			'username contains non alphanumeric characters - not allowed.'
+			'Username',
+			'Username contains non alphanumeric characters - not allowed.'
 		).isAlphanumeric(),
 		check('Password', 'Password is required').not().isEmpty(),
 		check('Email', 'Email does not appear to be valid.').isEmail(),
 	],
 	(req, res) => {
 		let errors = validationResult(req);
-
 		if (!errors.isEmpty()) {
 			return res.status(422).json({ errors: errors.array() });
 		}
-
 		let hashedPassword = user.hashPassword(req.body.Password);
 		user
-			.findOne({ Username: req.body.username })
-			.then((user) => {
-				if (user) {
-					return res.status(400).send(req.body.username + ' already exists');
+			.findOne({ Username: req.body.Username })
+			.then((User) => {
+				if (User) {
+					return res.status(400).send(req.body.Username + ' already exists');
 				} else {
 					user
 						.create({
-							username: req.body.username,
+							Username: req.body.Username,
 							Password: hashedPassword,
 							Email: req.body.Email,
 							Birthday: req.body.Birthday,
 						})
-						.then((user) => {
-							res.status(201).json(user);
+						.then((User) => {
+							res.status(201).json(User);
 						})
 						.catch((error) => {
 							console.error(error);
@@ -245,10 +249,10 @@ app.post(
 app.put(
 	'/users/:username',
 	[
-		check('username', 'username is required').isLength({ min: 5 }),
+		check('Username', 'Username is required').isLength({ min: 5 }),
 		check(
-			'username',
-			'username contains non alphanumeric characters - not allowed.'
+			'Username',
+			'Username contains non alphanumeric characters - not allowed.'
 		).isAlphanumeric(),
 		check('Password', 'Password is required').not().isEmpty(),
 		check('Email', 'Email does not appear to be valid.').isEmail(),
@@ -261,10 +265,10 @@ app.put(
 			return res.status(422).json({ errors: errors.array() });
 		}
 		user.findOneAndUpdate(
-			{ username: req.params.username },
+			{ Username: req.params.Username },
 			{
 				$set: {
-					username: req.body.username,
+					Username: req.body.Username,
 					Password: req.body.Password,
 					Email: req.body.Email,
 					Birthday: req.body.Birthday,
@@ -290,7 +294,7 @@ app.get(
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		user.findOneAndUpdate(
-			{ username: req.params.Username },
+			{ Username: req.params.Username },
 			{
 				$push: { FavoriteMovies: req.params.MovieID },
 			},
@@ -314,7 +318,7 @@ app.delete(
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		user.findOneAndUpdate(
-			{ username: req.params.username },
+			{ Username: req.params.Username },
 			{ $pull: { FavoriteMovies: req.params.MovieID } },
 			{ new: true },
 			(err, updatedUser) => {
@@ -336,12 +340,12 @@ app.delete(
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		user
-			.findOneAndRemove({ username: req.params.username })
-			.then((user) => {
-				if (!user) {
-					res.status(400).send(req.params.username + ' was not found');
+			.findOneAndRemove({ Username: req.params.Username })
+			.then((User) => {
+				if (!User) {
+					res.status(400).send(req.params.Username + ' was not found');
 				} else {
-					res.status(200).send(req.params.username + ' was deleted.');
+					res.status(200).send(req.params.Username + ' was deleted.');
 				}
 			})
 			.catch((err) => {
