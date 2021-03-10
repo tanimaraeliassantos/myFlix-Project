@@ -223,7 +223,7 @@ app.post(
 						Birthday: req.body.Birthday,
 					})
 						.then((User) => {
-							res.status(201).json(Users);
+							res.status(201).json(User);
 						})
 						.catch((error) => {
 							console.error(error);
