@@ -44,10 +44,10 @@ app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('public'));
 
-let auth = require('./auth')(app);
+let auth = require('./auth.js')(app);
 
 const passport = require('passport');
-require('./passport');
+require('./passport.js');
 
 //Default text response when at home/
 
