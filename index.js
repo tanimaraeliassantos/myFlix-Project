@@ -58,10 +58,10 @@ app.get('/', (req, res) => {
 	res.send('Welcome to myFlix!');
 });
 
-// // Get documentation
-// app.get('/documentation', (req, res) => {
-// 	res.sendFile('public/documentation.html', { root: __dirname });
-// });
+// Get documentation
+app.get('/documentation', (req, res) => {
+	res.sendFile('public/documentation.html', { root: __dirname });
+});
 
 //GET list of ALL movies
 
