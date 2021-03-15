@@ -13,6 +13,12 @@ const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 const { check, validationResult } = require('express-validator');
+app.use(bodyParser.json());
+app.use(
+	bodyParser.urlencoded({
+		extended: true,
+	})
+);
 
 app.use(
 	cors({
@@ -31,8 +37,6 @@ app.use(
 
 const Movies = Models.Movies;
 const Users = Models.Users;
-// const Genres = Models.Genres;
-// const Directors = Models.Directors;
 
 // mongoose.connect('mongodb://localhost:27017/myFlixDB'
 mongoose.connect(process.env.CONNECTION_URI, {
@@ -40,7 +44,6 @@ mongoose.connect(process.env.CONNECTION_URI, {
 	useUnifiedTopology: true,
 });
 
-app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('public'));
 
@@ -49,11 +52,16 @@ let auth = require('./auth.js')(app);
 const passport = require('passport');
 require('./passport.js');
 
-//Default text response when at home/
+//Default text response when at home
 
 app.get('/', (req, res) => {
 	res.send('Welcome to myFlix!');
 });
+
+// // Get documentation
+// app.get('/documentation', (req, res) => {
+// 	res.sendFile('public/documentation.html', { root: __dirname });
+// });
 
 //GET list of ALL movies
 
@@ -212,8 +220,8 @@ app.post(
 
 		let hashedPassword = Users.hashPassword(req.body.Password);
 		Users.findOne({ Username: req.body.Username })
-			.then((User) => {
-				if (User) {
+			.then((user) => {
+				if (user) {
 					return res.status(400).send(req.body.Username + ' already exists');
 				} else {
 					Users.create({
@@ -222,8 +230,8 @@ app.post(
 						Email: req.body.Email,
 						Birthday: req.body.Birthday,
 					})
-						.then((User) => {
-							res.status(201).json(User);
+						.then((user) => {
+							res.status(201).json(user);
 						})
 						.catch((error) => {
 							console.error(error);
