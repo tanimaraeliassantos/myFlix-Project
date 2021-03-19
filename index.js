@@ -71,7 +71,7 @@ app.get('/documentation', (req, res) => {
 
 app.get(
 	'/movies',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Movies.find()
 			.then((Movies) => {
@@ -122,7 +122,7 @@ app.get(
 
 app.get(
 	'/movies/:Title',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Movies.findOne({ Title: req.params.Title })
 			.then((Movies) => {
@@ -139,7 +139,7 @@ app.get(
 
 app.get(
 	'/movies/genres/:Name',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Movies.find({ 'Genre.Name': req.params.Name })
 			.then((Genres) => {
@@ -156,7 +156,7 @@ app.get(
 
 app.get(
 	'/movies/directors/:Name',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Movies.find({ 'Director.Name': req.params.Name })
 			.then((Directors) => {
@@ -173,7 +173,7 @@ app.get(
 
 app.post(
 	'/movies',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Movies.findOne({ Username: req.body.Title })
 			.then((movie) => {
@@ -297,7 +297,7 @@ app.put(
 
 app.get(
 	'/users/:Username/movies/:MovieID',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Users.findOneAndUpdate(
 			{ Username: req.params.Username },
@@ -321,7 +321,7 @@ app.get(
 
 app.delete(
 	'/users/:Username/movies/:MovieID',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Users.findOneAndUpdate(
 			{ Username: req.params.Username },
