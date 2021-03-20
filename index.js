@@ -39,8 +39,8 @@ app.use(
 	})
 );
 
-const Movies = Models.Movies;
-const Users = Models.Users;
+const Movies = Models.Movie;
+const Users = Models.User;
 
 // mongoose.connect('mongodb://localhost:27017/myFlixDB'
 mongoose.connect(process.env.CONNECTION_URI, {
