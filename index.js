@@ -69,20 +69,16 @@ app.get('/documentation', (req, res) => {
 
 //GET list of ALL movies
 
-app.get(
-	'/movies',
-	// passport.authenticate('jwt', { session: false }),
-	(req, res) => {
-		Movies.find()
-			.then((Movies) => {
-				res.status(201).json(Movies);
-			})
-			.catch((err) => {
-				console.error(err);
-				res.status(500).send('Error: ' + err);
-			});
-	}
-);
+app.get('/movies', (req, res) => {
+	Movies.find()
+		.then((Movies) => {
+			res.status(201).json(Movies);
+		})
+		.catch((error) => {
+			console.error(error);
+			res.status(500).send('Error: ' + error);
+		});
+});
 
 // GET list of ALL users
 
