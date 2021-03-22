@@ -3,7 +3,7 @@ const express = require('express'),
 	uuid = require('uuid'),
 	morgan = require('morgan');
 const { isInteger } = require('lodash');
-
+require('dotenv').config();
 const app = express();
 
 const mongoose = require('mongoose');
@@ -39,10 +39,17 @@ app.use(
 	})
 );
 
-const Movies = Models.Movie;
-const Users = Models.User;
+const Movies = Models.Movies;
+const User = Models.User;
 
-// mongoose.connect('mongodb://localhost:27017/myFlixDB'
+//connects mongoose to myFlixDB
+/*local host*/
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+// 	useNewUrlParser: true,
+// 	useUnifiedTopology: true,
+// });
+
+// // mongodb atlas
 mongoose.connect(process.env.CONNECTION_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -71,8 +78,8 @@ app.get('/documentation', (req, res) => {
 
 app.get('/movies', (req, res) => {
 	Movies.find()
-		.then((Movies) => {
-			res.status(201).json(Movies);
+		.then((Movie) => {
+			res.status(201).json(Movie);
 		})
 		.catch((error) => {
 			console.error(error);
@@ -86,9 +93,9 @@ app.get(
 	'/users',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
-		Users.find()
-			.then((Users) => {
-				res.status(201).json(Users);
+		User.find()
+			.then((responseuser) => {
+				res.status(201).json(responseuser);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -220,8 +227,8 @@ app.post(
 
 		let hashedPassword = Users.hashPassword(req.body.Password);
 		Users.findOne({ Username: req.body.Username })
-			.then((user) => {
-				if (user) {
+			.then((User) => {
+				if (User) {
 					return res.status(400).send(req.body.Username + ' already exists');
 				} else {
 					Users.create({
@@ -230,8 +237,8 @@ app.post(
 						Email: req.body.Email,
 						Birthday: req.body.Birthday,
 					})
-						.then((user) => {
-							res.status(201).json(user);
+						.then((User) => {
+							res.status(201).json(User);
 						})
 						.catch((error) => {
 							console.error(error);

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { stringify } = require('uuid');
 const bcrypt = require('bcrypt');
 
-let movieSchema = mongoose.Schema({
+let MovieSchema = mongoose.Schema({
 	Title: { type: String, required: true },
 	Description: { type: String, required: true },
 	Genre: {
@@ -34,8 +34,8 @@ userSchema.methods.validatePassword = function (Password) {
 	return bcrypt.compareSync(Password, this.Password);
 };
 
-let Movie = mongoose.model('Movie', movieSchema);
+let Movies = mongoose.model('Movies', MovieSchema);
 let User = mongoose.model('User', userSchema);
 
-module.exports.Movie = Movie;
+module.exports.Movies = Movies;
 module.exports.User = User;
