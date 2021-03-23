@@ -44,16 +44,16 @@ const User = Models.User;
 
 //connects mongoose to myFlixDB
 /*local host*/
-mongoose.connect('mongodb://localhost:27017/TanimaraSantosDB', {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
-
-// // // mongodb atlas
-// mongoose.connect(process.env.CONNECTION_URI, {
+// mongoose.connect('mongodb://localhost:27017/TanimaraSantosDB', {
 // 	useNewUrlParser: true,
 // 	useUnifiedTopology: true,
 // });
+
+// mongodb atlas
+mongoose.connect(process.env.CONNECTION_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+});
 
 app.use(morgan('common'));
 app.use(express.static('public'));
