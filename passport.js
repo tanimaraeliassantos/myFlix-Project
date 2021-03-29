@@ -15,26 +15,26 @@ passport.use(
 		},
 		(username, password, callback) => {
 			console.log(username + '  ' + password);
-			User.findOne({ Username: username }, (error, User) => {
+			User.findOne({ Username: username }, (error, user) => {
 				if (error) {
 					console.log(error);
 					return callback(error);
 				}
 
-				if (!User) {
+				if (!user) {
 					console.log('incorrect username');
 					return callback(null, false, {
 						message: 'Incorrect username.',
 					});
 				}
 
-				if (!User.validatePassword(password)) {
+				if (!user.validatePassword(password)) {
 					console.log('incorrect password');
 					return callback(null, false, { message: 'Incorrect password.' });
 				}
 
 				console.log('finished');
-				return callback(null, User);
+				return callback(null, user);
 			});
 		}
 	)
@@ -48,8 +48,8 @@ passport.use(
 		},
 		(jwtPayload, callback) => {
 			return User.findById(jwtPayload._id)
-				.then((User) => {
-					return callback(null, User);
+				.then((user) => {
+					return callback(null, user);
 				})
 				.catch((error) => {
 					return callback(error);
