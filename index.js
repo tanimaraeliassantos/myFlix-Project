@@ -228,8 +228,8 @@ app.post(
 
 		let hashedPassword = User.hashPassword(req.body.Password);
 		User.findOne({ Username: req.body.Username })
-			.then((User) => {
-				if (User) {
+			.then((responseuser) => {
+				if (responseuser) {
 					return res.status(400).send(req.body.Username + ' already exists');
 				} else {
 					User.create({
