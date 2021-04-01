@@ -238,8 +238,8 @@ app.post(
 						Email: req.body.Email,
 						Birthday: req.body.Birthday,
 					})
-						.then((User) => {
-							res.status(201).json(User);
+						.then((responseuser) => {
+							res.status(201).json(responseuser);
 						})
 						.catch((error) => {
 							console.error(error);
