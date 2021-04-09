@@ -77,16 +77,20 @@ app.get('/documentation', (req, res) => {
 
 //GET list of ALL movies
 
-app.get('/movies', (req, res) => {
-	Movies.find()
-		.then((movies) => {
-			res.status(201).json(movies);
-		})
-		.catch((error) => {
-			console.error(error);
-			res.status(500).send('Error: ' + error);
-		});
-});
+app.get(
+	'/movies',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Movies.find()
+			.then((movies) => {
+				res.status(201).json(movies);
+			})
+			.catch((error) => {
+				console.error(error);
+				res.status(500).send('Error: ' + error);
+			});
+	}
+);
 
 // GET list of ALL users
 
