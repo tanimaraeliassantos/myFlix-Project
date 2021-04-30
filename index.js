@@ -15,6 +15,7 @@ let allowedOrigins = [
 	'http://testsite.com',
 	'http://localhost:1234',
 	'https://moviesmyflix.netlify.app',
+	'*',
 ];
 
 const { check, validationResult } = require('express-validator');
@@ -42,13 +43,6 @@ app.use(
 
 const Movies = Models.Movies;
 const User = Models.User;
-
-//connects mongoose to myFlixDB
-/*local host*/
-// mongoose.connect('mongodb://localhost:27017/TanimaraSantosDB', {
-// 	useNewUrlParser: true,
-// 	useUnifiedTopology: true,
-// });
 
 // mongodb atlas
 mongoose.connect(process.env.CONNECTION_URI, {
