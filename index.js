@@ -16,6 +16,7 @@ let allowedOrigins = [
 	'http://localhost:1234',
 	'https://moviesmyflix.netlify.app',
 	'https://unruffled-ramanujan-e4eaa5.netlify.app',
+	'http://localhost:4200',
 	'*',
 ];
 
