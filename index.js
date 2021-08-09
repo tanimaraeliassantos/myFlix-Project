@@ -61,19 +61,24 @@ let auth = require('./auth.js')(app);
 const passport = require('passport');
 require('./passport.js');
 
-//Default text response when at home
+/**
+ * API call to homepage
+ */
 
 app.get('/', (req, res) => {
 	res.send('Welcome to myFlix!');
 });
 
-// Get documentation
+/**
+ * API route to get documentation
+ * */
 app.get('/documentation', (req, res) => {
 	res.sendFile('public/documentation.html', { root: __dirname });
 });
 
-//GET list of ALL movies
-
+/**
+ * API route to get list of all movies
+ */
 app.get(
 	'/movies',
 	passport.authenticate('jwt', { session: false }),
@@ -89,8 +94,9 @@ app.get(
 	}
 );
 
-// GET list of ALL users
-
+/**
+ * API route to get list of all users
+ */
 app.get(
 	'/users',
 	passport.authenticate('jwt', { session: false }),
@@ -106,8 +112,9 @@ app.get(
 	}
 );
 
-//GET a user by username
-
+/**
+ * API route to allow registered user to login
+ */
 app.get(
 	'/users/:Username',
 	passport.authenticate('jwt', { session: false }),
@@ -123,8 +130,9 @@ app.get(
 	}
 );
 
-//GET data about a single movie, by title
-
+/**
+ * API route to fetch data about a movie, by title
+ */
 app.get(
 	'/movies/:Title',
 	// passport.authenticate('jwt', { session: false }),
@@ -140,8 +148,9 @@ app.get(
 	}
 );
 
-//GET data about movies by genre
-
+/**
+ * API route to get data about genre from a movie
+ */
 app.get(
 	'/movies/genres/:Name',
 	// passport.authenticate('jwt', { session: false }),
@@ -157,8 +166,9 @@ app.get(
 	}
 );
 
-//GET data about a director by name
-
+/**
+ * API route to get data about a director from a movie
+ */
 app.get(
 	'/movies/directors/:Name',
 	// passport.authenticate('jwt', { session: false }),
@@ -174,8 +184,9 @@ app.get(
 	}
 );
 
-// ADD movie to list of movies
-
+/**
+ * API route to allow user to add a movie to list of all movies
+ */
 app.post(
 	'/movies',
 	// passport.authenticate('jwt', { session: false }),
@@ -207,8 +218,9 @@ app.post(
 	}
 );
 
-//Allow new users to register
-
+/**
+ * API route to allow new user to register
+ */
 app.post(
 	'/users',
 	[
@@ -255,8 +267,9 @@ app.post(
 	}
 );
 
-// Update a user's info, by username
-
+/**
+ * API route to allow user to update user info
+ */
 app.put(
 	'/users/:Username',
 	[
@@ -297,9 +310,9 @@ app.put(
 		);
 	}
 );
-
-//ADD a movie to list of favorites
-
+/**
+ * API route to allow user to add a movie to list of favorite movies
+ */
 app.get(
 	'/users/:Username/movies/:MovieID',
 	// passport.authenticate('jwt', { session: false }),
@@ -321,9 +334,9 @@ app.get(
 		);
 	}
 );
-
-// REMOVE a movie from favorites
-
+/**
+ * API route to allow user to remove a movie from list of favorite movies
+ */
 app.delete(
 	'/users/:Username/movies/:MovieID',
 	// passport.authenticate('jwt', { session: false }),
@@ -344,8 +357,9 @@ app.delete(
 	}
 );
 
-//Allow existing user to deregister
-
+/**
+ * API route to Allow existing user to deregister
+ */
 app.delete(
 	'/users/:Username',
 	passport.authenticate('jwt', { session: false }),
@@ -365,6 +379,7 @@ app.delete(
 	}
 );
 
+//listen for requests via environment variables
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
 	console.log('Listening on Port' + port);

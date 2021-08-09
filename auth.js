@@ -4,15 +4,19 @@ const jwt = require('jsonwebtoken'),
 
 require('./passport');
 
+/** Function to generate authentication token with expiration and algorithm settings
+ * @param {string} User
+ * @returns JWTToken
+ */
 let generateJWTToken = (User) => {
 	return jwt.sign(User, jwtSecret, {
-		subject: User.Username,
-		expiresIn: '7d',
-		algorithm: 'HS256',
+		subject: User.Username, //Username encoded in the JWT
+		expiresIn: '7d', // Token will expire in 7 days
+		algorithm: 'HS256', //Algorithm used to encode the values of JWT
 	});
 };
 
-/* POST login. */
+/** POST login. */
 module.exports = (router) => {
 	router.post('/login', (req, res) => {
 		passport.authenticate('local', { session: false }, (error, User, info) => {

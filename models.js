@@ -1,4 +1,6 @@
+//require Mongoose package
 const mongoose = require('mongoose');
+//require bcrypt
 const bcrypt = require('bcrypt');
 
 let MovieSchema = mongoose.Schema({
@@ -25,9 +27,18 @@ let userSchema = mongoose.Schema({
 	FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movies' }],
 });
 
+/**
+ * Function to hash a password so that only encrypted password are stored in the database
+ * @param {string} password
+ */
 userSchema.statics.hashPassword = function (password) {
 	return bcrypt.hashSync(password, 10);
 };
+
+/**
+ * Function to compare the hashed password in the database with the password that users enter
+ *  @param {string} password
+ */
 
 userSchema.methods.validatePassword = function (password) {
 	return bcrypt.compareSync(password, this.Password);

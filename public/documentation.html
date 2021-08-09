@@ -7,232 +7,340 @@
 			<link href="css/styles.css" rel="stylesheet" type="text/css" />
 		</head>
 		<body>
-			<h1>Achievement 2 Project Brief</h1>
+			<h1>myFLix Documentation</h1>
 			<div class="container">
 				<p>
-					This web application will provide users with access to information
+					This web application provides users with access to information
 					about different movies, directors and genres. Users will be able to
-					sign up, update their personal ifnormation, and create a list of their
+					sign up, update their personal ifnormation, and create a list with their
 					favorite movies.
 				</p>
 			</div>
 			<table style="width:100%">
-				<tr>
-					<th>Business Logic</th>
-					<th>URL</th>
+				<tr><strong>
+					<th>Request</th>
+					<th>URL Endpoint</th>
 					<th>HTTP Method</th>
-					<th>Request body data format</th>
-					<th>Response body data format</th>
-				</tr>
+					<th>Request body</th>
+					<th>Request body example</th>
+					<th>Response body</th>
+					<th>Response body example</th>
+				</strong></tr>
 				<tr>
 					<td>Get a list of all movies</td>
 					<td>/movies</td>
 					<td>GET</td>
 					<td>NONE</td>
+					<td>N/A</td>
 					<td>A JSON object holding data about all the movies</td>
+					<td>
+						<br>{
+							<br>"Genre": {
+								<br>"Name": "Adventure",
+								<br>"Description": "Adventure films are usually exciting stories, with new experiences or exotic locales, very similar to or often paired with the action film genre. They can include traditional swashbucklers or pirate films, serialized films, and historical spectacles, searches or expeditions for lost continents, jungle and desert epics, treasure hunts, disaster films, or searches for the unknown."
+							<br>},
+							<br>"Director": {
+									<br>"Name": "Christopher Nolan",
+									<br>"Bio": "Best known for his cerebral storytelling, writer-director Christopher Nolan was born on July 30, 1970, in London, England. Nolan has gone from low-budget independent films to working on some of the biggest blockbusters ever made.",
+									<br>"Birth": "1970-07-30",
+									<br>"Death": ""
+								<br>},
+							<br>"Actors": [],
+							<br>"_id": "602eef93a3bff60c06d80ec4",
+							<br>"Title": "The dark knight",
+							<br>"Description": "With the help of allies, Batman has been able to keep a tight lid on crime in Gotham City. But when a vile young criminal calling himself the Joker suddenly throws the town into chaos, the caped Crusader begins to tread a fine line between heroism and vigilantism.",
+							<br>"ImagePath": "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_UX182_CR0,0,182,268_AL_.jpg",
+							<br>"Featured": true
+							<br>}
+					</td>
+				</tr>
+				<tr>
+					<td>Get the data about a single movie, by title</td>
+					<td>/movies/:Title</td>
+					<td>GET</td>
+					<td>None</td>
+					<td>/movies/Superman</td>
+					<td>A JSON object holding data about a single movie, containing Genre, Director, Actors, ID, Title, Description, Image Path and Featured</td>
+					<td>
+						<br>{
+							<br>"Genre": {
+								<br>"Name": "Adventure",
+								<br>"Description": "Adventure films are usually exciting stories, with new experiences or exotic locales, very similar to or often paired with the action film genre. They can include traditional swashbucklers or pirate films, serialized films, and historical spectacles, searches or expeditions for lost continents, jungle and desert epics, treasure hunts, disaster films, or searches for the unknown."
+							<br>},
+							<br>"Director": {
+								<br>"Name": "Richard Donner",
+								<br>"Bio": "Richard Donner is a director and producer, known for Superman (1978), Ladyhawke (1985) and Lethal Weapon (1987).",
+								<br>"Birth": "1930-04-24",
+								<br>"Death": ""
+							<br>},
+							<br>"Actors": [],
+							<br>"_id": "602eefb4a3bff60c06d80ec6",
+							<br>"Title": "Superman",
+							<br>"Description": "Just before the destruction of the planet Krypton, scientist Jor-El sends his infant son Kal-El on a spaceship to Earth. Raised by kindly farmers, young Clark discovers the source of his superhuman powers and moves to Metropolis to fight evil. As Superman, he battles the villainous Lex Luthor, while, as novice reporter, he attempts to woo co-worker Lois Lane.",
+							<br>"ImagePath": "https://m.media-amazon.com/images/M/MV5BMzA0YWMwMTUtMTVhNC00NjRkLWE2ZTgtOWEzNjJhYzNiMTlkXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
+							<br>"Featured": true
+						<br>}
+					</td>
+				</tr>
+				<tr>
+					<td>Get data about genre</td>
+					<td>/movies/genres/:Name</td>
+					<td>GET</td>
+					<td>None</td>
+					<td>/movies/genres/Adventure</td>
+					<td>A JSON object holding data about a single genre, containing its Description</td>
+					<td>
+						<br>{
+							<br>"Genre": {
+								<br>"Name": "Adventure",
+								<br>"Description": "Adventure films are usually exciting stories, with new experiences or exotic locales, very similar to or often paired with the action film genre. They can include traditional swashbucklers or pirate films, serialized films, and historical spectacles, searches or expeditions for lost continents, jungle and desert epics, treasure hunts, disaster films, or searches for the unknown."
+						<br>}
+					</td>
+				</tr>
+				<tr>
+					<td>Get data about a director by name</td>
+					<td>/movies/directors/:Name</td>
+					<td>GET</td>
+					<td>None</td>
+					<td>/movies/directors/Christopher%20Nolan</td>
+					<td>A JSON object holding data about a single director, containing its Bio and all its movies on the database. </td>
+					<td>	
+						<br>[
+						<br>{
+							<br>"Genre": {
+								<br>"Name": "Adventure",
+								<br>"Description": "Adventure films are usually exciting stories, with new experiences or exotic locales, very similar to or often paired with the action film genre. They can include traditional swashbucklers or pirate films, serialized films, and historical spectacles, searches or expeditions for lost continents, jungle and desert epics, treasure hunts, disaster films, or searches for the unknown."
+							<br>},
+							<br>"Director": {
+								<br>"Name": "Richard Donner",
+								<br>"Bio": "Richard Donner is a director and producer, known for Superman (1978), Ladyhawke (1985) and Lethal Weapon (1987).",
+								<br>"Birth": "1930-04-24",
+								<br>"Death": ""
+							<br>},
+							<br>"Actors": [],
+							<br>"_id": "602eefb4a3bff60c06d80ec6",
+							<br>"Title": "Superman",
+							<br>"Description": "Just before the destruction of the planet Krypton, scientist Jor-El sends his infant son Kal-El on a spaceship to Earth. Raised by kindly farmers, young Clark discovers the source of his superhuman powers and moves to Metropolis to fight evil. As Superman, he battles the villainous Lex Luthor, while, as novice reporter, he attempts to woo co-worker Lois Lane.",
+							<br>"ImagePath": "https://m.media-amazon.com/images/M/MV5BMzA0YWMwMTUtMTVhNC00NjRkLWE2ZTgtOWEzNjJhYzNiMTlkXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
+							<br>"Featured": true
+						<br>}
+					]
+					</td>
+				</tr>
+				<tr>
+					<td>Add a movie to list of all movies</td>
+					<td>/movies</td>
+					<td>POST</td>
+					<td>A JSON object holding data about the movie to add</td>
+					<td>
+						<br>{
+							<br>"Genre": {
+								<br>"Name": "Action",
+								<br>"Description": "Action films usually include high energy, big-budget physical stunts and chases, possibly with rescues, battles, fights, escapes, destructive crises,, non-stop motion, spectacular rhythm and pacing, and adventurous, often two-dimensional 'good-guy' heroes or heroines battling 'bad guys' - all designed for pure audience escapism."
+							<br>},
+							<br>"Director": {
+								<br>"Name": "James Mangold",
+								<br>"Bio": "James Mangold is an American film and television director, screenwriter and producer. Films he has directed include Girl, Interrupted (1999), Walk the Line (2005), which he also co-wrote, the 2007 remake 3:10 to Yuma (2007), The Wolverine (2013), and Logan (2017).",
+								<br>"Birth": "1963-12-16",
+								<br>"Death": ""
+							<br>},
+							<br>"Actors": [],
+							<br>"Title": "Logan",
+							<br>"Description": "A weary Logan cares for an ailing Professor X at a remote outpost on the Mexican border. His plan to hide from the outside world gets upended when he meets a young mutant who is very much like him. Logan must now protect the girl and battle the dark forces that want to capture her.",
+							<br>"ImagePath": "https://m.media-amazon.com/images/M/MV5BYzc5MTU4N2EtYTkyMi00NjdhLTg3NWEtMTY4OTEyMzJhZTAzXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
+							<br>"Featured": true
+						<br>}
+					</td>
+					<td>A JSON object holding data about the movie that was added with an ID.</td>
+					<td>
+						<br>{
+							<br>"Genre": {
+								<br>"Name": "Action",
+								<br>"Description": "Action films usually include high energy, big-budget physical stunts and chases, possibly with rescues, battles, fights, escapes, destructive crises,, non-stop motion, spectacular rhythm and pacing, and adventurous, often two-dimensional 'good-guy' heroes or heroines battling 'bad guys' - all designed for pure audience escapism."
+							<br>},
+							<br>"Director": {
+								<br>"Name": "James Mangold",
+								<br>"Bio": "James Mangold is an American film and television director, screenwriter and producer. Films he has directed include Girl, Interrupted (1999), Walk the Line (2005), which he also co-wrote, the 2007 remake 3:10 to Yuma (2007), The Wolverine (2013), and Logan (2017).",
+								<br>"Birth": "1963-12-16",
+								<br>"Death": ""
+							<br>},
+							<br>"Actors": [],
+							<br>"_id": "602eefdba3bff60c06d80ec9",
+							<br>"Title": "Logan",
+							<br>"Description": "A weary Logan cares for an ailing Professor X at a remote outpost on the Mexican border. His plan to hide from the outside world gets upended when he meets a young mutant who is very much like him. Logan must now protect the girl and battle the dark forces that want to capture her.",
+							<br>"ImagePath": "https://m.media-amazon.com/images/M/MV5BYzc5MTU4N2EtYTkyMi00NjdhLTg3NWEtMTY4OTEyMzJhZTAzXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
+							<br>"Featured": true
+						<br>}
+					</td>
+				</tr>
+				<tr>
+					<td>Allow registered user to login</td>
+					<td>/users/:Username</td>
+					<td>GET</td>
+					<td>/users/test1</td>
+					<td>{"Username":"test1", "Password": "test1"}</td>
+					<td>A JSON object holding data about the user logged in.</td>
+					<td>
+						<br>{
+							<br>"User": {
+								<br>"FavoriteMovies": [
+								<br>"602eefb4a3bff60c06d80ec6",
+								<br>"602eefdba3bff60c06d80ec9",
+								<br>"602c9fd5a3bff60c06d80ebd",
+								<br>"602eeedfa3bff60c06d80ec1"
+							<br>],
+							<br>"_id": "606a668681c59200150ef32f",
+							<br>"Username": "test1",
+							<br>"Password": "$2b$10$rJb2NtGBYWu.xRPOF0Yxku0lcAdl2a7oaE8zpCKAE9NnBeNcYNPfG",
+							<br>"Email": "test1@mail.com",
+							<br>"Birthday": "1990-01-01T00:00:00.000Z",
+							<br>"__v": 0
+						<br>},
+						<br>"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGYXZvcml0ZU1vdmllcyI6WyI2MDJlZWZiNGEzYmZmNjBjMDZkODBlYzYiLCI2MDJlZWZkYmEzYmZmNjBjMDZkODBlYzkiLCI2MDJjOWZkNWEzYmZmNjBjMDZkODBlYmQiLCI2MDJlZWVkZmEzYmZmNjBjMDZkODBlYzEiXSwiX2lkIjoiNjA2YTY2ODY4MWM1OTIwMDE1MGVmMzJmIiwiVXNlcm5hbWUiOiJ0ZXN0MSIsIlBhc3N3b3JkIjoiJDJiJDEwJHJKYjJOdEdCWVd1LnhSUE9GMFl4a3UwbGNBZGwyYTdvYUU4enBDS0FFOU5uQmVOY1lOUGZHIiwiRW1haWwiOiJ0ZXN0MUBtYWlsLmNvbSIsIkJpcnRoZGF5IjoiMTk5MC0wMS0wMVQwMDowMDowMC4wMDBaIiwiX192IjowLCJpYXQiOjE2Mjg0NzUwMTAsImV4cCI6MTYyOTA3OTgxMCwic3ViIjoidGVzdDEifQ.SpfRAll9Y-YM7vwk5a1ObftzJIxmMWnML38sAaTZ8wM"
+					<br>}
+					</td>
 				</tr>
 				<tr>
 					<td>Get a list of all users</td>
 					<td>/users</td>
 					<td>GET</td>
 					<td>NONE</td>
-					<td>A JSON object holding data about all the movies</td>
+					<td>N/A</td>
+					<td>A JSON object holding all users data</td>
+					<td>
+						<br>[
+						<br>{
+							<br>"FavoriteMovies": [],
+							<br>"_id": "604810564b7018001543d932",
+							<br>"Username": "testuser",
+							<br>"Password": "$2b$10$8OWsi4nxenFULguK.aI8iOpMCNS9/oIgmIIkqfCvmxnMEpIH.kb0C",
+							<br>"Email": "testuser1@gmail.com",
+							<br>"Birthday": "1970-10-11T00:00:00.000Z",
+							<br>"__v": 0
+						<br>},
+						<br>{
+							<br>"FavoriteMovies": [],
+							<br>"_id": "604811ec4b7018001543d933",
+							<br>"Username": "testuser1",
+							<br>"Password": "$2b$10$frtVvV4O.OFwQAaGhVTz.Oy6hwZPfcHKsxK41FNJGzROGOxEBBIBW",
+							<br>"Email": "testuser1@gmail.com",
+							<br>"Birthday": "1970-10-11T00:00:00.000Z",
+							<br>"__v": 0
+						<br>},
+						...]</td>
+					<td></td>
 				</tr>
 				<tr>
-					<td>Get user by username</td>
-					<td>/users/[Username]</td>
-					<td>GET</td>
-					<td>NONE</td>
-					<td>A JSON object holding data about the user</td>
-				</tr>
-				<tr>
-					<td>Get the data about a single movie, by title</td>
-					<td>/movies/[Title]</td>
-					<td>GET</td>
-					<td>None</td>
-					<td>A JSON object holding data about a single movie, containing Genre, Director, Actors, ID, Title, Description, Image Path and Featured. Example:
-						{
-							"Genre": {
-								"Name": "Adventure",
-								"Description": "Adventure films are usually exciting stories, with new experiences or exotic locales, very similar to or often paired with the action film genre. They can include traditional swashbucklers or pirate films, serialized films, and historical spectacles, searches or expeditions for lost continents, jungle and desert epics, treasure hunts, disaster films, or searches for the unknown."
-							},
-							"Director": {
-								"Name": "Richard Donner",
-								"Bio": "Richard Donner is a director and producer, known for Superman (1978), Ladyhawke (1985) and Lethal Weapon (1987).",
-								"Birth": "1930-04-24",
-								"Death": ""
-							},
-							"Actors": [],
-							"_id": "602eefb4a3bff60c06d80ec6",
-							"Title": "Superman",
-							"Description": "Just before the destruction of the planet Krypton, scientist Jor-El sends his infant son Kal-El on a spaceship to Earth. Raised by kindly farmers, young Clark discovers the source of his superhuman powers and moves to Metropolis to fight evil. As Superman, he battles the villainous Lex Luthor, while, as novice reporter, he attempts to woo co-worker Lois Lane.",
-							"ImagePath": "https://m.media-amazon.com/images/M/MV5BMzA0YWMwMTUtMTVhNC00NjRkLWE2ZTgtOWEzNjJhYzNiMTlkXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
-							"Featured": true
-						}
-					</td>
-				</tr>
-
-				<tr>
-					<td>Get data about genre</td>
-					<td>/movies/genres/[Name]</td>
-					<td>GET</td>
-					<td>None</td>
-					<td>A JSON object holding data about a single genre, containing its Description. Example:
-						{
-							"Genre": {
-								"Name": "Adventure",
-								"Description": "Adventure films are usually exciting stories, with new experiences or exotic locales, very similar to or often paired with the action film genre. They can include traditional swashbucklers or pirate films, serialized films, and historical spectacles, searches or expeditions for lost continents, jungle and desert epics, treasure hunts, disaster films, or searches for the unknown."
-						}
-					</td>
-				</tr>
-				<tr>
-					<td>Get data about a director by name</td>
-					<td>/movies/directors/[Name]</td>
-					<td>GET</td>
-					<td>None</td>
-					<td>A JSON object holding data about a single director, containing its Bio. Example:
-						{
-							"Director": {
-								"Name": "Richard Donner",
-								"Bio": "Richard Donner is a director and producer, known for Superman (1978), Ladyhawke (1985) and Lethal Weapon (1987)."
-							}
-						}
-					</td>
-				</tr>
-				<tr>
-					<td>Add a movie to list of movies</td>
-					<td>/movies</td>
-					<td>POST</td>
-					<td>A JSON object holding data about the movie to add, structured like:
-						{
-							"Genre": {
-								"Name": "Action",
-								"Description": "Action films usually include high energy, big-budget physical stunts and chases, possibly with rescues, battles, fights, escapes, destructive crises,, non-stop motion, spectacular rhythm and pacing, and adventurous, often two-dimensional 'good-guy' heroes or heroines battling 'bad guys' - all designed for pure audience escapism."
-							},
-							"Director": {
-								"Name": "James Mangold",
-								"Bio": "James Mangold is an American film and television director, screenwriter and producer. Films he has directed include Girl, Interrupted (1999), Walk the Line (2005), which he also co-wrote, the 2007 remake 3:10 to Yuma (2007), The Wolverine (2013), and Logan (2017).",
-								"Birth": "1963-12-16",
-								"Death": ""
-							},
-							"Actors": [],
-							"Title": "Logan",
-							"Description": "A weary Logan cares for an ailing Professor X at a remote outpost on the Mexican border. His plan to hide from the outside world gets upended when he meets a young mutant who is very much like him. Logan must now protect the girl and battle the dark forces that want to capture her.",
-							"ImagePath": "https://m.media-amazon.com/images/M/MV5BYzc5MTU4N2EtYTkyMi00NjdhLTg3NWEtMTY4OTEyMzJhZTAzXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
-							"Featured": true
-						}
-					</td>
-					<td>A JSON object holding data about the movie that was added, including an ID:
-						{
-							"Genre": {
-								"Name": "Action",
-								"Description": "Action films usually include high energy, big-budget physical stunts and chases, possibly with rescues, battles, fights, escapes, destructive crises,, non-stop motion, spectacular rhythm and pacing, and adventurous, often two-dimensional 'good-guy' heroes or heroines battling 'bad guys' - all designed for pure audience escapism."
-							},
-							"Director": {
-								"Name": "James Mangold",
-								"Bio": "James Mangold is an American film and television director, screenwriter and producer. Films he has directed include Girl, Interrupted (1999), Walk the Line (2005), which he also co-wrote, the 2007 remake 3:10 to Yuma (2007), The Wolverine (2013), and Logan (2017).",
-								"Birth": "1963-12-16",
-								"Death": ""
-							},
-							"Actors": [],
-							"_id": "602eefdba3bff60c06d80ec9",
-							"Title": "Logan",
-							"Description": "A weary Logan cares for an ailing Professor X at a remote outpost on the Mexican border. His plan to hide from the outside world gets upended when he meets a young mutant who is very much like him. Logan must now protect the girl and battle the dark forces that want to capture her.",
-							"ImagePath": "https://m.media-amazon.com/images/M/MV5BYzc5MTU4N2EtYTkyMi00NjdhLTg3NWEtMTY4OTEyMzJhZTAzXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg",
-							"Featured": true
-						}
-					</td>
-				</tr>
-				<tr>
-					<td>Add user to list of users</td>
+					<td>Allow new user to register</td>
 					<td>/users</td>
 					<td>POST</td>
-					<td>A JSON object holding data about the user to add, structured like:
-						{
-							"Username": "testUser123",
-							"Password": "testpassword456",
-							"Email": "testemail@gmail.com",
-							"Birthday": "10/10/81"
-						}
+					<td>A JSON object holding data about the registered user</td>
+					<td>
+						<br>{
+							<br>"Username": "testUser123",
+							<br>"Password": "testpassword456",
+							<br>"Email": "testemail@gmail.com",
+							<br>"Birthday": "10/10/81"
+						<br>}
 					</td>
-					<td>A JSON object holding data about a single user, containing its Favorite Movies. ID, Username, Password, Email and Birthday. Example:
-						{
-							"FavoriteMovies": [],
-							"_id": "60338543d02e048cbfe098f8",
-							"Username": "testUser123",
-							"Password": "testpassword456",
-							"Email": "testemail@gmail.com",
-							"Birthday": "1981-10-09T14:00:00.000Z",
-							"__v": 0
-						}
+					<td>A JSON object holding user data.</td>
+					<br>{
+						<br>"FavoriteMovies": [],
+						<br>"_id": "60338543d02e048cbfe098f8",
+						<br>"Username": "testUser123",
+						<br>"Password": "testpassword456",
+						<br>"Email": "testemail@gmail.com",
+						<br>"Birthday": "1981-10-09T14:00:00.000Z",
+						<br>"__v": 0
+					<br>}
 					</td>
 				</tr>
+				
 				<tr>
-					<td>Update user's info, by username</td>
-					<td>/users/[Username]</td>
+					<td>Allow user to update user info</td>
+					<td>/users/:Username</td>
 					<td>PUT</td>
-					<td>A JSON object holding data about the user to update, structured like:
-						{
-							"Username": "testUser123",
-							"Password": "testpassword456",
-							"Email": "testemail@hotmail.com",
-							"Birthday": "10/10/81"
-						}
+					<td>A JSON object holding user data with the updated information.</td>
+					<td>
+						<br>{
+							<br>"Username": "testUser123",
+							<br>"Password": "testpassword456",
+							<br>"Email": "testemail@hotmail.com",
+							<br>"Birthday": "10/10/81"
+						<br>}
 					</td>
-					<td>A JSON object holding data about a single user, containing its Favorite Movies. ID, Username, Password, Email and Birthday. Example:
-						{
-							"FavoriteMovies": [],
-							"_id": "60338543d02e048cbfe098f8",
-							"Username": "testUser123",
-							"Password": "testpassword456",
-							"Email": "testemail@hotmail.com",
-							"Birthday": "1981-10-09T14:00:00.000Z",
-							"__v": 0
-						}
+					<td>A JSON object with updated user data. </td>
+					<td>
+						<br>{
+							<br>"FavoriteMovies": [],
+							<br>"_id": "60338543d02e048cbfe098f8",
+							<br>"Username": "testUser123",
+							<br>"Password": "testpassword456",
+							<br>"Email": "testemail@hotmail.com",
+							<br>"Birthday": "1981-10-09T14:00:00.000Z",
+							<br>"__v": 0
+						<br>}
 					</td>
 				</tr>
 				<tr>
-					<td>Add movie to a user's list of favorites</td>
-					<td>/users/[Username]</td>
+					<td>Allow user to add a movie to list of favorite movies</td>
+					<td>/users/:Username</td>
 					<td>POST</td>
-					<td>A JSON object holding data about the user to update, structured like:
-						{
-							"Favorite Movies": [
-								[
-									"602eef88a3bff60c06d80ec3",
-									"602eef93a3bff60c06d80ec4"
-								]
-							]
-					}
+					<td>A JSON object holding data about the user with the updated list.</td>
+					<td>/users/testUser123</td>
+					<td>
+						<br>{
+							<br>"Favorite Movies": [
+								<br>[
+									<br>"602eef88a3bff60c06d80ec3",
+									<br>"602eef93a3bff60c06d80ec4"
+								<br>]
+							<br>]
+					<br>}
 					</td>
-					<td>A JSON object holding data about a single user, containing its Favorite Movies. ID, Username, Password, Email and Birthday. Example:
-						{
-							"FavoriteMovies": [
-							"602eef88a3bff60c06d80ec3",
-							"602eef93a3bff60c06d80ec4"
-						],
-							"_id": "60338543d02e048cbfe098f8",
-							"Username": "testUser123",
-							"Password": "testpassword456",
-							"Email": "testemail@hotmail.com",
-							"Birthday": "1981-10-09T14:00:00.000Z",
-							"__v": 0
-						}
+					<td>A JSON object holding data about a single user, containing its Favorite Movies. ID, Username, Password, Email and Birthday. </td>
+					<td>
+						<br>	{
+							<br>"FavoriteMovies": [
+							<br>"602eef88a3bff60c06d80ec3",
+							<br>"602eef93a3bff60c06d80ec4"
+							<br>],
+							<br>"_id": "60338543d02e048cbfe098f8",
+							<br>"Username": "testUser123",
+							<br>"Password": "testpassword456",
+							<br>"Email": "testemail@hotmail.com",
+							<br>"Birthday": "1981-10-09T14:00:00.000Z",
+							<br>"__v": 0
+							<br>}
 					</td>
 				</tr>
 				<tr>
-					<td>Delete a movie from user's favorites </td>
-					<td>/users/[Username]/Movies/[movieID]</td>
+					<td>Allow user to remove a movie from list of favorite movies </td>
+					<td>/users/:Username/movies/:movie:ID</td>
 					<td>DELETE</td>
 					<td>None</td>
-					<td>A text message indicating whether the movie was successfully removed</td>
+					<td>/users/testuser/movies/602eefd2a3bff60c06d80ec8</td>
+					<td>A JSON object with user's data. favoriteMovies variable without the recently removed movie.</td>
+					<td>
+						<br>{
+							<br>"FavoriteMovies": [],
+							<br>"_id": "604810564b7018001543d932",
+							<br>"Username": "testuser",
+							<br>"Password": "$2b$10$8OWsi4nxenFULguK.aI8iOpMCNS9/oIgmIIkqfCvmxnMEpIH.kb0C",
+							<br>"Email": "testuser1@gmail.com",
+							<br>"Birthday": "1970-10-11T00:00:00.000Z",
+							<br>"__v": 0
+							<br>}</td>
+
 				</tr>
 				<tr>
-					<td>Delete a user by username</td>
-					<td>/users/[Username]</td>
+					<td>Allow existing user to deregister</td>
+					<td>/users/:Username</td>
 					<td>DELETE</td>
 					<td>None</td>
+					<td>/users/theran</td>
 					<td>A text message indicating the user was deleted.</td>
+					<td>theran was deleted.</td>
 				</tr>
 			  </table>
 			<script src="script.js"></script>
