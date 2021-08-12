@@ -28,7 +28,7 @@ let userSchema = mongoose.Schema({
 });
 
 /**
- * Function to hash a password so that only encrypted password are stored in the database
+ * Function to hash a password so that only encrypted password is stored in the database
  * @param {string} password
  */
 userSchema.statics.hashPassword = function (password) {

@@ -1,65 +1,65 @@
 const express = require('express'),
 	bodyParser = require('body-parser'),
-	uuid = require('uuid'),
 	morgan = require('morgan');
-const { isInteger } = require('lodash');
-require('dotenv').config();
-const app = express();
-
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
 const cors = require('cors');
-let allowedOrigins = [
-	'http://localhost:8080',
-	'http://testsite.com',
-	'http://localhost:1234',
-	'https://moviesmyflix.netlify.app',
-	'https://unruffled-ramanujan-e4eaa5.netlify.app',
-	'http://localhost:4200',
-	'http://anthropovixen.github.io',
-	'*',
-];
-
 const { check, validationResult } = require('express-validator');
+const passport = require('passport');
+require('./passport.js');
+
+require('dotenv').config();
+
+const Movies = Models.Movies;
+const User = Models.User;
+const app = express();
+
+/** Connect to MongoDB Atlas database */
+mongoose.connect(process.env.CONNECTION_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+});
+
 app.use(bodyParser.json());
 app.use(
 	bodyParser.urlencoded({
 		extended: true,
 	})
 );
+app.use(cors()); //allows requests from all origins
 
-app.use(
-	cors({
-		origin: (origin, callback) => {
-			if (!origin) return callback(null, true);
-			if (allowedOrigins.indexOf(origin) === -1) {
-				let message =
-					"The CORS policy for this application doesn't allow access from origin" +
-					origin;
-				return callback(new Error(message), false);
-			}
-			return callback(null, true);
-		},
-	})
-);
-
-const Movies = Models.Movies;
-const User = Models.User;
-
-// mongodb atlas
-mongoose.connect(process.env.CONNECTION_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
+/** Restriction of requests to what is declared in allowedOrigins commented out */
+// let allowedOrigins = [
+// 	'http://localhost:8080',
+// 	'http://testsite.com',
+// 	'http://localhost:1234',
+// 	'https://moviesmyflix.netlify.app',
+// 	'https://unruffled-ramanujan-e4eaa5.netlify.app',
+// 	'http://localhost:4200',
+// 	'http://anthropovixen.github.io',
+// 	'*',
+// ];
+// app.use(
+// 	cors({
+// 		origin: (origin, callback) => {
+// 			if (!origin) return callback(null, true);
+// 			if (allowedOrigins.indexOf(origin) === -1) {
+// 				let message =
+// 					"The CORS policy for this application doesn't allow access from origin" +
+// 					origin;
+// 				return callback(new Error(message), false);
+// 			}
+// 			return callback(null, true);
+// 		},
+// 	})
+// );
 
 app.use(morgan('common'));
-app.use(express.static('public'));
+
+app.use(express.static('public')); //returns static files
 
 let auth = require('./auth.js')(app);
-
-const passport = require('passport');
-require('./passport.js');
 
 /**
  * API call to homepage
@@ -223,6 +223,7 @@ app.post(
  */
 app.post(
 	'/users',
+	//Validation logic for request
 	[
 		check('Username', 'Username is required').isLength({ min: 5 }),
 		check(
@@ -233,6 +234,7 @@ app.post(
 		check('Email', 'Email does not appear to be valid.').isEmail(),
 	],
 	(req, res) => {
+		//check validation object for errors
 		let errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
@@ -272,6 +274,7 @@ app.post(
  */
 app.put(
 	'/users/:Username',
+	//Validation logic for request
 	[
 		check('Username', 'Username is required').isLength({ min: 5 }),
 		check(
@@ -282,6 +285,7 @@ app.put(
 		check('Email', 'Email does not appear to be valid.').isEmail(),
 	],
 	passport.authenticate('jwt', { session: false }),
+	//check validation object for errors
 	(req, res) => {
 		let errors = validationResult(req);
 
