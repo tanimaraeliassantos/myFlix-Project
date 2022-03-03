@@ -38,7 +38,7 @@ To get more help on MongoDB go check out the [MongoDB Manual](https://docs.mongo
 
 ### Author
 
-[Tanimara Elias Santos](https://github.com/anthropovixen)
+[Tanimara Elias Santos](https://github.com/tanimaraeliassantos)
 
 ### Version
 
