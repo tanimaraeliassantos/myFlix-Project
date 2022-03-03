@@ -2,9 +2,9 @@
 
 Backend of myFlix MERN stack app, a RESTful API with collections about movies, directors and genres. It is stored in MongoDB and managed with Mongoose, using JSOn Web Tokens to encript and secure users information.
 
-View the website built with Angular [here](https://anthropovixen.github.io/Angular-Client-myFlix-App) and its repository [here](https://github.com/anthropovixen/Angular-Client-myFlix-App).
+View the website built with Angular [here](https://tanimaraeliassantos.github.io/Angular-Client-myFlix-App) and its repository [here](https://github.com/tanimaraeliassantos/Angular-Client-myFlix-App).
 
-View the website built with React [here](https://moviesmyflix.netlify.app/) and its repository [here](https://github.com/anthropovixen/myFlix-client).
+View the website built with React [here](https://moviesmyflix.netlify.app/) and its repository [here](https://github.com/tanimaraeliassantos/myFlix-client).
 
 ## Features
 
