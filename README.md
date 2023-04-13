@@ -8,15 +8,15 @@ View the website built with React [here](https://moviesmyflix.netlify.app/) and 
 
 ## Features
 
-- Returns a list of all movies in the database
+- Return a list of all movies in the database
 - Return data about a single movie by title
 - Return data about a genre by name
 - Return data about a director by name
-- Allo new users to register
-- Allows users to sign into the application with a safe token
-- Allows users to see all movies in the database
-- Allows users to update or delete their account
-- Allows users to add or remove movies from their list of favorite movies
+- Allow new users to register
+- Allow users to sign into the application with a safe token
+- Allow users to see all movies in the database
+- Allow users to update or delete their account
+- Allow users to add or remove movies from their list of favorite movies
 
 ## Back-end Technologies
 
